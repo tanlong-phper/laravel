@@ -66,7 +66,7 @@ class ColumnController extends BaseController
             'web_url'=>$request->web_url,
             'image_url'=>$path.'/'.$name,
             'remarks'=>$request->remarks,
-            'char_code'=>'ABC',
+            'char_code'=>zh2pinyin($request->class_name),
             'create_time'=>date('Y-m-d H:i:s')
         ];
         $rs = TbuyClass::insert($data);

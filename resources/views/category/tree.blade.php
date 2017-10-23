@@ -8,6 +8,7 @@
 					<a title="编辑" href="{{ url('category/column/edit',['id'=>$values['class_id']]) }}">编辑</a>
 				</div>
 				<div class="fold"><i></i></div>
+				<div class="order">{{ $values['class_id'] }}</div>
 				<div class="order"><input type="text" name="sort_number" class="text input-mini" value="{{ $values['sort_number'] }}"></div>
 				<div class="order">
 					@if(isset($cateStatus[$values['status']]))

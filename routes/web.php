@@ -67,6 +67,13 @@ Route::group(['prefix'=>'store'],function(){
     Route::resource('query', 'Store\QueryController');
 });
 
+Route::group(['prefix'=>'supplier'],function(){
+    Route::resource('review', 'Supplier\ReviewController');
+    Route::resource('manage', 'Supplier\ManageController');
+    Route::resource('add', 'Supplier\AddController');
+    Route::resource('callback', 'Supplier\CallBackController');
+});
+
 Route::group(['prefix'=>'app'],function(){
     Route::resource('ad', 'App\AdController');
     Route::resource('ad_cate', 'App\AdCateController');

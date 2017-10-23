@@ -72,6 +72,10 @@ class AddController extends BaseController
             return redirect('product/add/step3');
         }
 
+        if(!isset($_SESSION['product']['select_class'])){
+            return redirect('product/add/index');
+        }
+
         $class_id = $_SESSION['product']['select_class'];
 
         $prop_lists = DB::table('tbuy_property')->where("class_id", $class_id)->where('status',1)->get();

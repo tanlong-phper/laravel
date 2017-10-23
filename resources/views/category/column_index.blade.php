@@ -32,6 +32,7 @@
         <div class="category">
             <div class="hd cf">
                 <div class="fold">折叠</div>
+                <div class="order">ID</div>
                 <div class="order">排序</div>
                 <div class="order">状态</div>
                 <div class="name">名称</div>
