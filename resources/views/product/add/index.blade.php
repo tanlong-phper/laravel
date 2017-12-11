@@ -16,7 +16,7 @@
     </ul>
     <div class="box">
 
-        <form action="{{ url('product/add/step1') }}">
+        <form action="{{ url('product/add/step1') }}" class="form_submit" method="post">
         <!-- /.box-header -->
         <div class="box-body">
 
@@ -36,9 +36,9 @@
                     </div>
 
                     <div class="col-sm-7">
-                        <label><b>商家选择：</b> </label>
+                        <label><b>供应商选择：</b> </label>
 
-                        <select class="form-control"  name="supplier_id" id="supplier_id">
+                        <select class="form-control " msg="请选择供应商！" required  name="supplier_id" id="supplier_id">
                             <option value="">—请选择—</option>
                             @foreach($supplier_list as $val)
                                 <option @if(isset($data->supplier_id)&&$val->supplier_id==$data->supplier_id) selected @endif value="{{ $val->supplier_id }}">{{ $val->shortname }}</option>
@@ -55,7 +55,7 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <label><b>一级分类：</b></label>
-                        <select class="form-control" id="class_1" onchange="a(1, this);">
+                        <select class="form-control required" msg="请选择一级分类" required id="class_1" onchange="a(1, this);">
                             <option value="">—请选择—</option>
                             @foreach($class as $val)
                                 <option @if($val->class_id==$class_id_f) selected @endif value="{{ $val->class_id }}">{{ $val->class_name }}</option>
@@ -64,7 +64,7 @@
                     </div>
                     <div class="col-sm-4">
                         <label><b>二级分类：</b></label>
-                        <select class="form-control" id="class_2" name="select_class" onchange="a(2, this);">
+                        <select class="form-control required"  msg="请选择二级分类" required id="class_2" name="select_class" onchange="a(2, this);">
                             <option value="">—请选择—</option>
                             @foreach($class_sub as $val)
                                 <option @if($val->class_id==$data->class_id) selected @endif value="{{ $val->class_id }}">{{ $val->class_name }}</option>
@@ -89,7 +89,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <label><b>主标题：</b></label>
-                        <input type="text" class="form-control" style="width:80%;" name="product_name" placeholder="">
+                        <input type="text" class="form-control required" required msg="请填写主标题" style="width:80%;" name="product_name" placeholder="">
                     </div>
 
                 </div>
@@ -116,7 +116,7 @@
                 <div class="row">
                     <div class="col-sm-9"></div>
                     <div class="col-sm-3">
-                        <a href="javascript:window.history.go(-1);" type="button" class="btn btn-default">取消</a>
+                        <a href="javascript:window.history.go(-1);" type="button" class="btn  btn-default">上一步</a>
                         <button type="submit" class="btn btn-primary">下一步</button>
                     </div>
                 </div>
@@ -138,6 +138,21 @@
 @section('js')
     <script type="text/javascript" >
 
+        $(function (){
+            $('.form_submit').submit(function (){
+                var is_pass = 1;
+                $(this).find('input[class*="required"],select[class*="required"]').each(function (){
+                    if($(this).val() == '' && $(this).val().length == 0){
+                        var msg = $(this).attr('msg') ? $(this).attr('msg') : '不能为空 !';
+                        layer.msg(msg,{icon:10});
+                        is_pass = 0;
+                        return false;
+                    }
+                });
+                if(!is_pass) return false;
+            });
+        });
+
         function a(num, that){
             var id=1;
             if(num>0) id=$('#class_'+num+' option:selected').val();
@@ -145,7 +160,7 @@
             var class_id = $(that).val();
             $('#class_id').val(class_id);
             $.get("{{asset('product/add/product_class')}}",{'parents_id':id},function(obj){
-                var html='<option >—请选择—</option>';
+                var html='<option value="">—请选择—</option>';
                 if(obj){
 
                     for (var i=0;i<obj.data.length;i++){

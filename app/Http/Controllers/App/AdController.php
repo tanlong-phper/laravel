@@ -19,6 +19,15 @@ class AdController extends BaseController
         return view('app.ad.index');
     }
 
+    public function rotation(){
+        return view('app.ad.rotation');
+    }
+
+    public function adSlot(){
+        return view('app.ad.ad_slot');
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *

@@ -3,6 +3,12 @@
 
 @section('content')
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="box">
 
         <!-- /.box-header -->
@@ -10,15 +16,17 @@
 
             <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
 
-                <form action="{{ url('account/user') }}" method="post">
+                <form action="{{ url('supplier/manage') }}" method="post">
                     {{ csrf_field() }}
                     <h4 class="bg-info" style="padding:10px; font-size:14px;">搜索</h4>
                     <div class="row">
                         <div class="col-sm-2">
                             <label><b>供应商状态：</b></label>
-                            <select class="form-control" name="department_id">
-                                <option value="0">不限</option>
-
+                            <select class="form-control" name="status">
+                                <option value="">不限</option>
+                                @foreach($supplier_status as $k => $v)
+                                    <option value="{{ $k }}" @if(isset($_REQUEST['status']) && $_REQUEST['status'] == $k) selected @endif>{{ $v }}</option>
+                                @endforeach
                             </select>
 
                         </div>
@@ -33,9 +41,9 @@
                         <div class="col-sm-3">
                             <label><b>关键词搜索</b></label>
                             <select class="form-control" name="keyword_type">
-                                <option value="name">姓名</option>
+                                <option value="supplier_name">供应商名称</option>
                             </select>
-                            <input type="text" class="form-control" name="keyword" placeholder="">
+                            <input type="text" class="form-control" name="keyword" value="{{ $_REQUEST['keyword'] or '' }}">
 
                         </div>
                         <div class="col-sm-2">
@@ -50,8 +58,8 @@
                 <h4 class="bg-info" style="padding:5px 10px; font-size:14px; overflow:hidden;">
                     <span style="line-height:34px;">列表</span>
                     <div style="float:right;">
-                        <button type="button" class="btn btn-default">商家入驻</button>
-                        <a href="/account/user/create" type="button" class="btn btn-default">导出EXCEL</a>
+                        <a href="{{ url('supplier/add') }}" type="button" class="btn btn-default">商家入驻</ah>
+                        <a href="javascript:;" type="button" class="btn btn-default">导出EXCEL</a>
                     </div>
                 </h4>
                 <h4 class="bg-info" style="padding:5px 10px; font-size:14px; overflow:hidden;">
@@ -139,18 +147,18 @@
                                     <td class="sorting_1">{{ $key+1 }}</td>
                                     <td>{{ $value->supplier_id }}</td>
                                     <td>{{ $value->shortname }}</td>
-                                    <td>{{ $value->status }}</td>
+                                    <td>@if($value->status != null) {{ $supplier_status[$value->status] }}@endif</td>
                                     <td>{{ $value->phone }}</td>
                                     <td>{{ $value->telphone }}</td>
                                     <td>5</td>
                                     <td>5000</td>
                                     <td>{{ date('Y-m-d H:i:s') }}</td>
                                     <td><span>
-                                        <a href="{{ url('account/user/updateStatus',['id'=>$value->supplier_id,'status'=>1]) }}" class="layer-get">
+                                        <a href="{{ url('supplier/manage/updateStatus',['id'=>$value->supplier_id,'status'=>$value->status]) }}" class="layer-get">
                                             @if($value->status) 停用 @else 启用 @endif
                                         </a>&nbsp;
-                                        <a href="{{ url('account/user/'.$value->supplier_id.'/edit') }}">编辑</a>&nbsp;
-                                        <a href="{{ url('account/user',['id'=>$value->supplier_id]) }}" token="{{ csrf_token() }}" class="layer-delete">查看</a>
+                                        <a href="{{ url('supplier/add?supplier_id='.$value->supplier_id) }}">编辑</a>&nbsp;
+
                                     </span></td>
 
                                 </tr>

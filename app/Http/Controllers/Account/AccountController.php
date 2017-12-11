@@ -40,6 +40,7 @@ class AccountController extends BaseController
             $account_lists = Account::orderBy('id')->paginate(10);
         }
 
+
         foreach($account_lists as &$value){
             $value->parse_department_id = DB::table('departments')->where('id',$value->department_id)->value('name');
             $value->parse_role_id = DB::table('roles')->where('id',$value->role_id)->value('name');

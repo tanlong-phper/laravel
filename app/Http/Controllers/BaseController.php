@@ -26,6 +26,11 @@ class BaseController extends Controller
             $role = explode(',',$role);
 
             $url = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'];
+            //存在参数就截取掉
+            if(strpos($url,'?') !== false){
+                $url = strstr($url, '?', true);
+            }
+
             //菜单子目录定位了二级目录
             $explode = explode('/', $url);
             if(count($explode) > 3){
@@ -34,6 +39,7 @@ class BaseController extends Controller
             if($url == '/'){
                 $url = '/index.php';
             }
+
             //判断权限和控制菜单
             $if_url = 0;
             foreach($menu_lists as $key => $values){
@@ -45,13 +51,17 @@ class BaseController extends Controller
                     }
                 }
             }
+            $allow_url = ['home/upload_image'];
+            if(in_array(trim($url,'/'),$allow_url)){
+                $if_url = 1;
+            }
 
             //没有权限返回首页
             if($if_url == 0 && $url != '/index.php'){
                 return redirect('/');
             }
 
-            $menu_lists =_tree_hTree(_tree_sort($menu_lists,'sort'));
+            $menu_lists =_tree_hTree(_tree_sort($menu_lists,'sort_number'));
             //视图间共享数据
             view()->share('__menu_lists__',$menu_lists);
 
@@ -79,7 +89,7 @@ class BaseController extends Controller
     protected function getAllMenu($tree = false){
         $list = DB::table('menus')->where('status','<>',0)->get()->toArray();
         if($tree){
-            $list =_tree_hTree(_tree_sort($list,'sort'));
+            $list =_tree_hTree(_tree_sort($list,'sort_number'));
         }
         return $list;
     }
@@ -109,6 +119,15 @@ class BaseController extends Controller
         $areas = DB::table('TNET_AREA')->where('parent_id','<>',0)->get();
         $areas = objectToArray($areas);
         return genTree($areas, 'area_id','parent_id');
+    }
+
+    // 上传一张图片公共方法 name="image"
+    public function upload_image(Request $request){
+        $file_path = '';
+        base64_upload('images','image',function($data) use(&$file_path){
+            $file_path = curl_upfile($data[0]);
+        });
+        $this->ajaxSuccess('图片上传成功',$file_path);
     }
 
 }

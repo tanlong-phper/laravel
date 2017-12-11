@@ -9,8 +9,9 @@
     .prop_list .prop_checkbox { margin-left:15px; margin-right:5px;  margin-top: -3px!important; }
 
     .data input { width:100px; }
+    .table_data_div tr {     font-size: 14px;}
     .table_data_div {  position: relative; width:80%; }
-    .table_data_div .apply_all_product { position: absolute;  right: -134px;  top: 46px; }
+    .table_data_div .apply_all_product { position: absolute;  right: -134px;  top: 4px; }
 </style>
 
 @section('content')
@@ -24,7 +25,8 @@
     </ul>
     <div class="box">
 
-        <form action="{{ url('product/add/step1') }}">
+        <form action="{{ url('product/add/step2') }}" method="post">
+            {{ csrf_field() }}
         <!-- /.box-header -->
         <div class="box-body">
 
@@ -36,13 +38,13 @@
                 <div class="prop_list">
                     @foreach($prop_lists as $key=>$value)
                         <div class="property_name">
-                            {{ $value->property_name }}:
+                            <span class="property_title">{{ $value->property_name }}</span>:
                             <span class="prop_value_box">
 
                             </span>
                         </div>
 
-                        <div class="prop_value_list prop_value_list_{{ $key }}">
+                        <div class="prop_value_list prop_value_list_{{ $key }}" prop_name="{{ $value->property_name }}">
                             <span class="prop_value_list_checkbox">
                                 @foreach($value->property_value as $val)
                                     <label>
@@ -107,7 +109,7 @@
                     <button class="btn btn-default apply_all_product">应用到所有商品</button>
                 </div>
 
-                <h4 class="bg-info" style="padding:10px; font-size:14px;">支付方式</h4>
+                {{--<h4 class="bg-info" style="padding:10px; font-size:14px;">支付方式</h4>
 
                 <div class="table_data_div">
                     <table class="table table-bordered">
@@ -126,7 +128,7 @@
                         </tbody>
                     </table>
                     <button class="btn btn-default apply_all_product">应用到所有商品</button>
-                </div>
+                </div>--}}
 
 
 
@@ -135,9 +137,8 @@
                 <div class="row">
                     <div class="col-sm-9"></div>
                     <div class="col-sm-3">
-                        <input type="hidden" name="remarks" value="" id="remarks">
                         <input type="hidden" name="class_id" id="class_id" value="{{ $product['select_class'] }}">
-                        <a href="javascript:window.history.go(-1);" type="button" class="btn btn-default">取消</a>
+                        <a href="javascript:window.history.go(-1);" type="button" class="btn btn-default">上一步</a>
                         <button type="submit" class="btn btn-primary">下一步</button>
                     </div>
                 </div>
@@ -162,7 +163,10 @@
 
         $(function (){
 
-            create_data([['32G','64G'],['金色']]);
+
+
+
+//            create_data([['规格:32G','规格:64G'],['颜色:金色']]);
 
             //勾选属性值
             $('.prop_list').delegate('.prop_checkbox','change',function (){
@@ -176,25 +180,25 @@
                     $('.prop_value_box').find('.prop_value[value_id="'+value_id+'"]').remove();
                 }
                 var prop_arr = [];
+                var value_arr = [];
                 $('.prop_list').find('.prop_value_list').each(function (){
-
+                    var title = $(this).attr('prop_name');
                     var temp_arr = [];
                     var checked = $(this).find('.prop_checkbox:checked');
                     if(checked.length > 0){
                         checked.each(function (){
-                            temp_arr.push($(this).val());
+                            temp_arr.push(title+":"+$(this).val()+"@"+$(this).attr('value_id'));
                         })
 
                     }
+                    if(temp_arr.length > 0){
+                        prop_arr.push(temp_arr);
+                    }
 
-                    prop_arr.push(temp_arr);
+
                 });
 
-
                 create_data(prop_arr);
-
-
-                $("#remarks").val();
 
             });
 
@@ -265,6 +269,7 @@
         /*将属性值排列组合*/
         function array_comb(arr){
             var len = arr.length;
+
             // 当数组大于等于2个的时候
             if(len >= 2){
                 // 第一个数组的长度
@@ -300,18 +305,48 @@
 
         //生成对应的属性信息
         function create_data(prop_arr){
+            //初始化
+            if(prop_arr.length == 0){
+                $('.price_data').html('');
+                $('.point_data').html('');
+                $('.pay_data').html('');
+                return false;
+            }
+            //排列祝贺
             var list = array_comb(prop_arr);
-
-            console.log(list);
 
             if(list != []){
 
                 var price_data = '';
                 var point_data = '';
                 var pay_data = '';
-                for(var i = 0; i < list.length; i++){
-                    price_data += '<tr>' +
-                            '<td>' + list[i].join('/') + '</td>' +
+                var list_length = list.length;
+
+                //插入数据
+                for(var i = 0; i < list_length; i++){
+
+                    var list_input = '';
+                    var list_td = '';
+                    if(prop_arr.length == 1){
+                        var temp_name1 = list[i].split(':');
+                        list_input = list[i];
+                        list_td = temp_name1[1].substr(0,temp_name1[1].indexOf("@"));
+                    }else{
+                        var remarks = list[i];
+                        var temp_list = [];
+
+                        for(var j = 0; j < remarks.length; j++){
+                            var temp_name = list[i][j].split(':');
+                            temp_name = temp_name[1].substr(0,temp_name[1].indexOf("@"));
+                            temp_list.push(temp_name);
+                        }
+                        list_input = list[i].join(',');
+                        list_td = temp_list.join('/');
+                    }
+
+
+                    price_data += '<input type="hidden" name="remarks[]" value="' + list_input + '"><tr>' +
+                            '<td>' + list_td + '</td>' +
                             '<td><input class="text sale_price" type="text" name="sale_price[]"></td>' +
                             '<td><input class="text cost_price" type="text" name="cost_price[]"></td>' +
                             '<td><input class="text market_price" type="text" name="market_price[]"></td>' +
@@ -319,26 +354,26 @@
                             '</tr>';
 
                     point_data += '<tr>' +
-                            '<td>' + list[i].join('/') + '</td>' +
-                            '<td><input class="text" type="text" name="sale_price"></td>' +
-                            '<td><input class="text" type="text" name="sale_price"></td>' +
-                            '<td><input class="text" type="text" name="ga_integral"></td>' +
-                            '<td><input class="text" type="text" name="hl_integral"></td>' +
+                            '<td>' + list_td + '</td>' +
+                            '<td><input class="text" type="text" name="hl_integral[]"></td>' +
+                            '<td><input class="text" type="text" name="pv[]"></td>' +
+                            '<td><input class="text" type="text" name="ga_integral[]"></td>' +
+                            '<td><input class="text" type="text" name="haolian[]"></td>' +
                             '</tr>';
 
 
-                    pay_data += '<tr>' +
-                            '<td>' + list[i].join('/') + '</td>' +
-                            '<td><input class="text" type="text" name="sale_price"></td>' +
-                            '<td><input class="text" type="text" name="sale_price"></td>' +
-                            '<td><input class="text" type="text" name="sale_price"></td>' +
-                            '<td><input class="text" type="text" name="sale_price"></td>' +
-                            '<td><input class="text" type="text" name="sale_price"></td>' +
-                            '</tr>';
+                    /*pay_data += '<tr>' +
+                            '<td>' + list_td + '</td>' +
+                            '<td><input class="text" type="text" name="sale_price1"></td>' +
+                            '<td><input class="text" type="text" name="sale_price1"></td>' +
+                            '<td><input class="text" type="text" name="sale_price1"></td>' +
+                            '<td><input class="text" type="text" name="sale_price1"></td>' +
+                            '<td><input class="text" type="text" name="sale_price1"></td>' +
+                            '</tr>';*/
                 }
                 $('.price_data').html(price_data);
                 $('.point_data').html(point_data);
-                $('.pay_data').html(pay_data);
+//                $('.pay_data').html(pay_data);
 
             }
         }

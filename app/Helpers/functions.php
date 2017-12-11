@@ -186,6 +186,178 @@ function zh2pinyin($zh){
     return $ret;
 }
 
+// base64 上传图片
+function base64_upload($type,$field,$callback = ''){
+    $sBase64 = request($field);
+    $file_name_pre = '/storage/'.$type.'/'.date('Y-m-d').'/';
+    $return = array();
+    if(empty($sBase64)){
+        @$callback([]);
+        return false;
+    }
+    if(!is_array($sBase64)){
+        $sBase64 = array($sBase64);
+    }
+    foreach($sBase64 as $base64){
+        if(strpos($base64 , "base64,")){
+            $base64 = explode('base64,' , $base64)[1];
+        }
+        $base64 = base64_decode($base64);
+        if(empty($base64)) continue;
+
+        $file_name = $file_name_pre.uniqid(date('Ymd').rand('1000','9999')).'.png';
+        $save_path = '.'.$file_name;
+        if(!is_dir('.'.$file_name_pre)){
+            mkdir('.'.$file_name_pre,0777,true);
+        }
+        file_put_contents($save_path,$base64);
+        $return[] = $file_name;
+    }
+    $callback($return);
+    return true;
+}
+
+/**
+ * @param $files
+ * @return mixed
+ * 上传到文件服务器
+ */
+function curl_upfile($files){
+    $cwd = rtrim(getcwd(), '/') . '/';
+
+    $ch = curl_init();
+
+    $post = array();
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER,array('User-Agent: Opera/9.80 (Windows NT 6.2; Win64; x64) Presto/2.12.388 Version/12.15','Content-Type: multipart/form-data'));
+    curl_setopt($ch, CURLOPT_URL,env('FILE_SERVER_URL'));
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+// same as <input type="file" name="file_box">
+    $post = array(
+        'AppId'		=> env('FILE_SERVER_APPID'),
+        'SafeCode'	=> env('FILE_SERVER_SAFECODE'),
+        'Thumnail'	=> '0',
+//		'file_box'	=> "@".getcwd().$files,
+        'image[]'	=> curl_file_create($cwd . $files),
+    );
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+    $response = curl_exec($ch);
+    if(curl_errno($ch)){	//出错则显示错误信息
+        throw new Exception('上传图片文件过大');
+    }
+    curl_close($ch); //关闭curl链接
+    unlink($cwd . $files);
+    preg_match('/<fullpath.*fullpath>/i',$response,$match);
+    return strip_tags($match[0]);
+}
+
+/**
+ * @param $add_status array
+ * @return bool
+ * 检查事务是否都是插入成功的。
+ */
+function checkTrans($add_status)
+{
+    foreach ($add_status as $v) {
+        if (!$v && $v !== 0) {
+            return false;
+        }
+        return true;
+    }
+}
+
+
+
+/**
+ * 查询快递信息
+ * @param $com 物流公司信息，拼音
+ * @param $no 快递单号
+ *  常见快递公司编码：
+公司名称 	公司公司编码
+邮政包裹/平邮 	youzhengguonei
+国际包裹 	youzhengguoji
+EMS 	ems
+EMS-国际件 	emsguoji
+EMS-国际件 	emsinten
+北京EMS 	bjemstckj
+顺丰 	shunfeng
+申通 	shentong
+圆通 	yuantong
+中通 	zhongtong
+汇通 	huitongkuaidi
+韵达 	yunda
+宅急送 	zhaijisong
+天天 	tiantian
+德邦 	debangwuliu
+国通 	guotongkuaidi
+增益 	zengyisudi
+速尔 	suer
+中铁物流 	ztky
+中铁快运 	zhongtiewuliu
+能达 	ganzhongnengda
+优速 	youshuwuliu
+全峰 	quanfengkuaidi
+京东 	jd
+ */
+function kuaidi($com , $no){
+    $host = "http://express.woyueche.com";
+    $path = "/query.action";
+    $appcode = "ece8cce0e2e84443b684286e65965c89"; // porter的阿里云
+    $headers = array();
+    array_push($headers, "Authorization:APPCODE " . $appcode);
+    //根据API的要求，定义相对应的Content-Type
+    array_push($headers, "Content-Type".":"."application/x-www-form-urlencoded;charset=UTF-8");
+
+    $url = $host . $path;
+    $result = curl_post($url , ['express'=>$com , 'trackingNo'=>$no] , $headers);
+    $result =explode("\n" , $result);
+    return json_decode(array_pop($result), true);
+}
+
+// curl 模拟 post 请求
+function curl_post($url,$post_data = array() , $header = false){
+    $ch = curl_init(); //初始化curl
+    curl_setopt($ch, CURLOPT_URL, $url);//设置链接
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//设置是否返回信息
+    curl_setopt($ch, CURLOPT_POST, 1);//设置为POST方式
+    if($header){
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    }
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));//POST数据
+    $response = curl_exec($ch);//接收返回信息
+    if(curl_errno($ch)){	//出错则显示错误信息
+        print curl_error($ch);
+    }
+    curl_close($ch); //关闭curl链接
+    return $response;
+}
+
+/**
+ * 将数据导出EXCEL
+ * @param  [array 一维数组] $title   [标题]
+ * @param  [array 二维数组] $content [导出内容]
+ * @param  [string] $filename [文件名,默认为data.xls]
+ */
+function exportData($title , $content , $filename = 'data'){
+//	$title = array('标题a' , '标题b' , '标题c');
+//	$content = array(
+//		array('aa' , 'bb' , 'cc'),
+//		array('dd' , 'ee' , 'ff'),
+//		array('gg' , 'hh' , 'ii'),
+//	);
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment; filename=' . $filename . '.xls');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+
+    echo iconv('utf-8', 'gbk', implode("\t", $title)), "\n";
+    foreach ($content as $value) {
+        echo iconv('utf-8', 'gbk', implode("\t", $value)), "\n";
+    }
+    exit();
+}
 
 
 

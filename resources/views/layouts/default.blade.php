@@ -7,10 +7,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>管理系统</title>
+    <title>管理平台</title>
+    {{--<link rel="shortcut icon" href="favicon.ico">--}}
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+{{--    <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">--}}
+    <script src="{{ asset('static/jeDate/jedate.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}">
@@ -37,6 +39,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <style>
         .main-sidebar { padding:0;}
     </style>
+    @yield('css')
 </head>
 
 @include('layouts._header')
@@ -91,7 +94,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
-<script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+{{--<script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>--}}
 
 <script src="{{ asset('static/ajaxForm.js') }}"></script>
 <script src="{{ asset('static/layer/dialog.js') }}"></script>

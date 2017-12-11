@@ -25,8 +25,11 @@
                     <option value="1" @if(isset($_REQUEST['status']) && $_REQUEST['status'] == 1) selected @endif>启用</option>
                     <option value="2" @if(isset($_REQUEST['status']) && $_REQUEST['status'] == 2) selected @endif>删除</option>
                 </select>
+                <label>分类名字：<input type="text" name="class_name" class="text" style="height:30px;" value="@if(isset($_REQUEST['class_name'])){{ $_REQUEST['class_name'] }}@endif"></label>
                 <input type="submit" class="btn" value="查询" name="search" style="margin-left:20px;">
+                <a href="{{ url('category/column') }}" class="btn">显示全部</a>
             </form>
+
         </div>
         
         <div class="category">

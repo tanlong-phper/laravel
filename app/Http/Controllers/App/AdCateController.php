@@ -19,6 +19,10 @@ class AdCateController extends BaseController
         return view('app.ad_cate.index');
     }
 
+    public function downCate(){
+        return view('app.ad_cate.down_cate');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

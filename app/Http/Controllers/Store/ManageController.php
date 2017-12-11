@@ -3,84 +3,123 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\BaseController;
+use App\Models\TbuyEnterprise;
+use App\Models\TnetArea;
 use Illuminate\Http\Request;
 
 class ManageController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * 店铺管理
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        return view('store.manage.index');
+        $status = (int)$request->input('status');
+        $keywords = $request->input('keywords');
+        $query = TbuyEnterprise::orderBy('id', 'desc');
+
+        $where = [];
+        if($status){
+            $where['status'] = $status;
+        }
+
+        if($keywords){
+            $where[] = ['merchant_name', 'like', "%$keywords%"];
+        }
+
+        if(!empty($where)){
+            $query->where($where);
+        }
+        $list = $query->paginate(20);
+
+        return view('store.manage.index', ['list' => $list, 'status' => $status, 'keywords' => $keywords]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 编辑店铺信息
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+    public function edit(Request $request)
     {
-        //
+
+        if($request->isMethod('post'))
+        {
+
+            $data = $request->all();
+
+            if(!$data['passwd']){
+                unset($data['passwd']);
+            }
+            $model = new TbuyEnterprise;
+            if(!$model->validator($data)){
+                return $this->ajaxError($model->getError());
+            }
+
+
+            $enterprise = TbuyEnterprise::where(['id' => $data['id']])->first();
+            if(empty($enterprise)){
+                return $this->ajaxError('更新失败，数据不存在');
+            }
+
+            $checkNodecode = TbuyEnterprise::where(['nodecode' => $data['nodecode'], ['id', '<>', $data['id']]])->first();
+
+            if($checkNodecode){
+                return $this->ajaxError('更新失败，账号已存在');
+            }
+
+            if(isset($data['passwd'])){
+                $data['passwd'] = TbuyEnterprise::GetPasswd($data['id'], $data['passwd']);
+            }
+
+            unset($data['_token']);
+            $res = TbuyEnterprise::where(['id' => $data['id']])->update($data);
+
+            if(!$res)
+            {
+                return $this->ajaxError('数据更新失败，请重试');
+            }
+
+            return $this->ajaxSuccess('编辑成功');
+        }else
+        {
+            $id = (int)$request->input('id');
+            $city=[];
+            $region=[];
+            $areaModel=new TnetArea();
+            $data = TbuyEnterprise::where(['id' => $id])->first();
+            if(!empty($data->province)){
+                $city=$areaModel->getChild($data->province);
+            }
+            if(!empty($data->city)){
+                $region=$areaModel->getChild($data->city);
+            }
+            $province=$areaModel->getChild();//获得省级列表
+
+            return view('store.manage.edit', ['data' => $data,'province'=>$province,'city'=>$city,'region'=>$region]);
+        }
+
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
      */
-    public function store(Request $request)
+    public function enable(Request $request)
     {
-        //
+        $id = (int)$request->input('id');
+        $model = TbuyEnterprise::where(['id' => $id])->first();
+        if(empty($model)){
+            return $this->ajaxError('数据不存在');
+        }
+        $status = $model->status == 1 ? 2 : 1;
+        $model->status = $status;
+        $res = $model->update();
+        if(!$res) return $this->ajaxError();
+        return $this->ajaxSuccess();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

@@ -101,7 +101,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-2 control-label">展示图片：</label>
                             <div class="col-sm-4">
-                                <img src="{{ asset('uploads/'.$class_info->image_url) }}" alt="">
+                                <img src="{{ $class_info->image_url }}" alt="">
                             </div>
                         </div>
 

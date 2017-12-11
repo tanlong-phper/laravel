@@ -1,11 +1,11 @@
 <?php
-namespace App\Models\Admin;
+namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
-class Product extends Common {
+class Product extends Base {
     protected $table = 'tbuy_product';
     /**
      * 根据商品ID号，查询商品信息

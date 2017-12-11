@@ -24,15 +24,27 @@ class ColumnController extends BaseController
         $query = DB::table('TBUY_CLASS');
 
         if(isset($request->search)){
-            if($request->status != -1){
+            if(isset($request->status) && $request->status != -1){
                 $query->where('status',$request->status);
             }
+
+            if($request->class_name != ''){
+                $query->where('class_name','like','%'.$request->class_name.'%');
+            }
+
+            $class_lists = $query->orderByDesc('sort_number')->get()->toArray();
+
+            if($request->class_name != '') {
+                foreach ($class_lists as $value) {
+                    $class_lists = array_merge($class_lists, DB::table('TBUY_CLASS')->where('father_id', $value['class_id'])->orderByDesc('sort_number')->get()->toArray());
+                }
+            }
+        }else{
+            $class_lists = $query->orderByDesc('sort_number')->get()->toArray();
         }
 
-        $class_lists = $query->orderBy('sort_number')->get()->toArray();
-
         $class_lists = genTree($class_lists,'class_id','father_id');
-
+    
         return view('category/column_index', ['tree'=>$class_lists,'cateStatus'=>$this->cateStatus]);
     }
 
@@ -40,31 +52,24 @@ class ColumnController extends BaseController
         return view('category/tree',['tree'=>$tree]);
     }
 
-    public function create($pid){
+    public function create($pid,$class_name = ''){
         $parent_cate = DB::table('TBUY_CLASS')->where('class_id',$pid)->first();
-        return view('category/column_create',['parent_cate'=>$parent_cate,'class_type'=>$this->class_type,'cateStatus'=>$this->cateStatus]);
+        return view('category/column_create',['parent_cate'=>$parent_cate,'class_type'=>$this->class_type,'cateStatus'=>$this->cateStatus,'class_name'=>$class_name]);
     }
 
     public function store(Request $request){
         $class_id = TbuyClass::getNextSeq();
 
-        $path = 'category';
-        $name = $class_id.'.jpg';
-        if ($request->hasFile('image_url') && $request->file('image_url')->isValid()) {
-            $photo = $request->file('image_url');
-            $extension = $photo->extension();
-            $store_result = $photo->storeAs($path, $name);
-        }
-
         $data = [
             'class_id'=>$class_id,
+            'class_code'=>$class_id,
             'father_id'=>$request->pid,
             'class_type'=>$request->class_type,
             'status'=>$request->status,
             'sort_number'=>empty($request->sort_number) ? 0 : $request->sort_number,
             'class_name'=>$request->class_name,
             'web_url'=>$request->web_url,
-            'image_url'=>$path.'/'.$name,
+            'image_url'=>$request->image_url,
             'remarks'=>$request->remarks,
             'char_code'=>zh2pinyin($request->class_name),
             'create_time'=>date('Y-m-d H:i:s')
@@ -78,7 +83,7 @@ class ColumnController extends BaseController
     }
 
     /* 编辑分类 */
-    public function edit(Request $request,$id = ''){
+    public function edit(Request $request,$id = '',$class_name = ''){
         if($request->isMethod('post')){ //提交表单
             if(!empty($request->class_id)){
                 $data = ['sort_number'=>$request->sort_number, 'class_name'=>$request->class_name];
@@ -92,20 +97,13 @@ class ColumnController extends BaseController
         } else {
             $class_info = DB::table('TBUY_CLASS')->where('class_id',$id)->first();
             $parent_cate = DB::table('TBUY_CLASS')->where('class_id',$class_info->father_id)->first();
-            return view('category/column_edit', ['class_info'=>$class_info,'class_type'=>$this->class_type,'parent_cate'=>$parent_cate,'cateStatus'=>$this->cateStatus]);
+            return view('category/column_edit', ['class_info'=>$class_info,'class_type'=>$this->class_type,'parent_cate'=>$parent_cate,'cateStatus'=>$this->cateStatus,'class_name'=>$class_name]);
         }
     }
 
     public function update(Request $request){
         $class_id = $request->class_id;
-        $path = 'category';
-        $name = $class_id.'.jpg';
-        if ($request->hasFile('image_url') && $request->file('image_url')->isValid()) {
-            $photo = $request->file('image_url');
-            $extension = $photo->extension();
-//            $store_result = $photo->store('photo');
-            $store_result = $photo->storeAs($path, $name);
-        }
+
         $data = [
 //            'father_id'=>$request->father_id,
             'class_type'=>$request->class_type,
@@ -113,9 +111,9 @@ class ColumnController extends BaseController
             'sort_number'=>empty($request->sort_number) ? 0 : $request->sort_number,
             'class_name'=>$request->class_name,
             'web_url'=>$request->web_url,
-            'image_url'=>$path.'/'.$name,
+            'image_url'=>$request->image_url,
             'remarks'=>$request->remarks,
-            'char_code'=>'ABC',
+            'char_code'=>zh2pinyin($request->class_name),
             'create_time'=>date('Y-m-d H:i:s')
         ];
 
@@ -131,6 +129,14 @@ class ColumnController extends BaseController
         $class_info = DB::table('TBUY_CLASS')->where('class_id',$class_id)->first();
         $parent_cate = DB::table('TBUY_CLASS')->where('class_id',$class_info->father_id)->first();
         return view('category/column_show', ['class_info'=>$class_info,'class_type'=>$this->class_type,'parent_cate'=>$parent_cate,'cateStatus'=>$this->cateStatus]);
+    }
+
+    public function destroy($class_id){
+        $rs = TbuyClass::where('class_id', $class_id)->delete();
+        if($rs){
+            return $this->ajaxSuccess('删除分类成功！', url('/category/column'));
+        }
+        return $this->ajaxError('删除分类失败！', url('/category/column'));
     }
 
 

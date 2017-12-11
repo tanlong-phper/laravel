@@ -4,8 +4,8 @@
 		<dt class="cf">
 			<form action="{{ url('category/column/edit') }}" method="post">
 				<div class="btn-toolbar opt-btn cf">
-					<a title="分类详情" target='dialog' width="80%" height="80%" btn="取消" href="{{ url('category/column/show',['class_id'=>$values['class_id']]) }}">查看</a>
-					<a title="编辑" href="{{ url('category/column/edit',['id'=>$values['class_id']]) }}">编辑</a>
+					<a title="分类详情" target='dialog' width="80%" height="80%" offset="100,100" btn="取消" href="{{ url('category/column/show',['class_id'=>$values['class_id']]) }}">查看</a>
+					<a title="编辑" href="{{ url('category/column/edit',['id'=>$values['class_id'],'class_name'=>isset($_REQUEST['class_name']) ?$_REQUEST['class_name']:'']) }}">编辑</a>
 				</div>
 				<div class="fold"><i></i></div>
 				<div class="order">{{ $values['class_id'] }}</div>
@@ -25,7 +25,7 @@
 					<input type="hidden" name="class_id" value="{{ $values['class_id'] }}">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input type="text" name="class_name" class="text" value="{{ $values['class_name'] }}">
-					<a class="add-sub-cate" title="添加子分类" href="{{ url('category/column/create',['pid'=>$values['class_id']]) }}">
+					<a class="add-sub-cate" title="添加子分类" href="{{ url('category/column/create',['pid'=>$values['class_id'],'class_name'=>isset($_REQUEST['class_name']) ?$_REQUEST['class_name']:'']) }}">
 						<i class="icon-add"></i>
 					</a>
 					<span class="help-inline msg"></span>

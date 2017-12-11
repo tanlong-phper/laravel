@@ -86,7 +86,7 @@
                                     >
                                     {{ $lv1_value['name'] }}
                                 </label>
-                            @if(isset($lv1_value['sub']))
+                            @if(!empty($lv1_value['sub']))
                                 <ul class="two" style="display: none">
                                 @foreach($lv1_value['sub'] as $lv2_value)
                                     <li><span class="switch">+</span>
@@ -100,7 +100,7 @@
                                             >
                                             {{ $lv2_value['name'] }}
                                         </label>
-                                    @if(isset($lv2_value['sub']))
+                                    @if(!empty($lv2_value['sub']))
                                         <ul class="three" style="display: none">
                                         @foreach($lv2_value['sub'] as $lv3_value)
                                             <li>

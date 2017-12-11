@@ -367,7 +367,7 @@ class Order extends Base {
             ->leftJoin('tbuy_order','tbuy_order.order_id','=','tbuy_order_details.order_id')
             ->leftJoin('tbuy_product','tbuy_product.product_id','=','tbuy_order_details.product_id')
             ->leftJoin('finance_supplier t5','t5.supplier_id','=','tbuy_product.supplier_id')
-            ->select('tbuy_order_details.*')//去除多余字段
+            ->select('tbuy_order_details.*','tbuy_order.pay_time')//去除多余字段
             ->get();
         return $res;
     }

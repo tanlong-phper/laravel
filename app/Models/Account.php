@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class Account extends Base
 {
 
-//    public $table = 'accounts';
+//    public $table = 'admin_accounts';
 
 
     /*public function getDepartmentIdAttribute($value){
