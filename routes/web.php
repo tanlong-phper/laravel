@@ -255,6 +255,13 @@ Route::group(['prefix'=>'article'],function() {
 });
 
 
+//房源管理
+Route::group(['prefix'=>'house'],function() {
+    $controller = 'House\HouseController@';
+    //房源列表
+    Route::get('houseLister',$controller.'houseLister');
+});
+
 
 
 
