@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AdminMenu extends Base
+class Menu extends Base
 {
     //
-    protected $table = 'admin_menus';
+//    protected $table = 'admin_menus';
 }

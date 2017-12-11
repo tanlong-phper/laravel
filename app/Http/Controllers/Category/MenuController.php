@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\BaseController;
-use App\Models\AdminMenu;
+use App\Models\Menu;
 use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -46,12 +46,10 @@ class MenuController extends BaseController
     }
 
     public function store(Request $request){
-        $id = AdminMenu::getNextSeq();
         $data = $request->input();
         unset($data['_token']);
-        $data['id'] = $id;
 
-        $rs = AdminMenu::insert($data);
+        $rs = Menu::insert($data);
         if($rs){
             return redirect()->route('column/menu/index')->with('success','新增菜单成功！');
         }else{
@@ -72,7 +70,7 @@ class MenuController extends BaseController
     }
 
     public function destroy($id){
-        $rs = AdminMenu::where('id', $id)->delete();
+        $rs = Menu::where('id', $id)->delete();
         if($rs){
             return $this->ajaxSuccess('删除菜单成功！', url('/category/menu'));
         }
