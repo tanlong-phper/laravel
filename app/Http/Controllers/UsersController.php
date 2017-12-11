@@ -1,8 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\AdminAccount;
+use App\Models\Account;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -20,7 +19,7 @@ class UsersController extends Controller {
 
 			$username = $request->input('username');
 			$password = $request->input('password');
-			$userInfo = AdminAccount::where(['username' => $username])->first();
+			$userInfo = Account::where(['username' => $username])->first();
 
 			if(!$userInfo){
 				ajax_error('用户名不存在');

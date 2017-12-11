@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>浩联全球购运营后台</title>
+		<title>管理平台</title>
 		<meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
 		<meta name="renderer" content="webkit|ie-comp|ie-stand">
 		<meta name="robots" content="noindex,nofollow">
@@ -32,7 +32,7 @@
 	</head>
 <body>
 	<div class="wrap">
-		<h1><a>浩联全球购运营后台</a></h1>
+		<h1><a>管理平台</a></h1>
 		<form method="post" name="login" autoComplete="off" class="js-ajax-form">
 			<div class="login">
 				<ul>

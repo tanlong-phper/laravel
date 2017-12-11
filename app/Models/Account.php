@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class AdminAccount extends Base
+class Account extends Base
 {
 
-    public $table = 'admin_accounts';
+//    public $table = 'accounts';
 
 
     /*public function getDepartmentIdAttribute($value){

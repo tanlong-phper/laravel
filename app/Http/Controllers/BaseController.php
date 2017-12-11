@@ -21,8 +21,8 @@ class BaseController extends Controller
                 return redirect()->route('users/login');
             }
             //取出菜单和用户的权限
-            $menu_lists = DB::table('ADMIN_MENUS')->where('status','<>',0)->get()->toArray();
-            $role = DB::table('ADMIN_ROLES')->where('id',$user_info['role_id'])->value('menu_role_id');
+            $menu_lists = DB::table('menus')->where('status','<>',0)->get()->toArray();
+            $role = DB::table('roles')->where('id',$user_info['role_id'])->value('menu_role_id');
             $role = explode(',',$role);
 
             $url = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'];
@@ -57,11 +57,11 @@ class BaseController extends Controller
 
 
             //显示二级目录的名字
-            $current_menu = DB::table('ADMIN_MENUS')->where('url',$url)->first();
+            $current_menu = DB::table('menus')->where('url',$url)->first();
             if(!empty($current_menu)){
                 view()->share('__current_menu__',$current_menu);
                 if($current_menu->pid != 0){
-                    $parent_menu = DB::table('ADMIN_MENUS')->where('id',$current_menu->pid)->first();
+                    $parent_menu = DB::table('menus')->where('id',$current_menu->pid)->first();
                     view()->share('__parent_menu__',$parent_menu);
                 }
             }
@@ -77,7 +77,7 @@ class BaseController extends Controller
      * @return array
      */
     protected function getAllMenu($tree = false){
-        $list = DB::table('ADMIN_MENUS')->where('status','<>',0)->get()->toArray();
+        $list = DB::table('menus')->where('status','<>',0)->get()->toArray();
         if($tree){
             $list =_tree_hTree(_tree_sort($list,'sort'));
         }

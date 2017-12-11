@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\BaseController;
-use App\Models\AdminRole;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -16,17 +16,17 @@ class RoleController extends BaseController
 
     public function __construct(){
         parent::__construct();
-        $this->role = new AdminRole;
+        $this->role = new Role;
     }
 
     public function index(){
-        $role_lists = AdminRole::paginate(10);
+        $role_lists = Role::paginate(10);
 
         foreach($role_lists as &$value){
-            $value->department_name = DB::table('ADMIN_DEPARTMENTS')->where('id',$value->department_id)->value('name');
+            $value->department_name = DB::table('departments')->where('id',$value->department_id)->value('name');
             $value->parse_status = $this->role_status[$value->status];
             if($value->pid != 0){
-                $rs = AdminRole::where('id',$value->pid)->first(['name']);
+                $rs = Role::where('id',$value->pid)->first(['name']);
                 $value->parent_depart_name = $rs->name;
             }
         }
@@ -34,14 +34,14 @@ class RoleController extends BaseController
     }
 
     public function create(){
-        $roles = AdminRole::where('status',1)->get(['id','name']);
-        $departmentList = $this->getSelectList('ADMIN_DEPARTMENTS');
+        $roles = Role::where('status',1)->get(['id','name']);
+        $departmentList = $this->getSelectList('departments');
         $menu_lists = $this->getAllMenu(true);
         return view('account.role_create', ['menu_lists'=>$menu_lists,'roles'=>$roles, 'departmentList'=>$departmentList]);
     }
 
     public function store(Request $request){
-        $id = AdminRole::getNextSeq();
+        $id = Role::getNextSeq();
         $data = [
             'id' =>$id,
             'name' =>$request->name,
@@ -50,7 +50,7 @@ class RoleController extends BaseController
             'department_id' =>$request->department_id,
             'menu_role_id' =>empty($request->menu_role_id) ? '' : implode(',', $request->menu_role_id)
         ];
-        $rs = AdminRole::insert($data);
+        $rs = Role::insert($data);
         if($rs){
             return $this->ajaxSuccess('新增角色成功！', url('/account/role'));
         }else{
@@ -59,9 +59,9 @@ class RoleController extends BaseController
     }
 
     public function edit($id){
-        $lists = AdminRole::find($id);
-        $roles = AdminRole::where('status',1)->get(['id','name']);
-        $departmentList = $this->getSelectList('ADMIN_DEPARTMENTS');
+        $lists = Role::find($id);
+        $roles = Role::where('status',1)->get(['id','name']);
+        $departmentList = $this->getSelectList('departments');
         $menu_lists = $this->getAllMenu(true);
         $lists->menu_role_id_arr = explode(',',$lists->menu_role_id);
         return view('account.role_edit',['menu_lists'=>$menu_lists,'lists'=>$lists,'roles'=>$roles, 'departmentList'=>$departmentList]);
@@ -75,7 +75,7 @@ class RoleController extends BaseController
         $data['department_id'] = $request->department_id;
         $data['menu_role_id'] = empty($request->menu_role_id) ? '' : implode(',', $request->menu_role_id);
 
-        AdminRole::where('id', $request->id)->update($data);
+        Role::where('id', $request->id)->update($data);
 
         return $this->ajaxSuccess('编辑角色成功！', url('/account/role'));
 
@@ -89,7 +89,7 @@ class RoleController extends BaseController
 
         $data['status'] = !$request->status;
 
-        $rs = AdminRole::where('id', $request->id)
+        $rs = Role::where('id', $request->id)
             ->update($data);
         if($rs){
             return $this->ajaxSuccess('操作成功！', url('/account/role'));
@@ -98,7 +98,7 @@ class RoleController extends BaseController
     }
 
     public function destroy($id){
-        $rs = AdminRole::destroy($id);
+        $rs = Role::destroy($id);
         if($rs){
             return $this->ajaxSuccess('删除角色成功！', url('/account/role'));
         }
