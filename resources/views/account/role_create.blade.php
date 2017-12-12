@@ -19,7 +19,7 @@
             <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
 
                 <h4 class="bg-info" style="padding:5px 10px; font-size:14px; overflow:hidden;">
-                    <span style="line-height:34px;">新增部门</span>
+                    <span style="line-height:34px;">新增角色</span>
                 </h4>
                 <div class="row">
                     <div class="col-sm-4">
@@ -46,22 +46,6 @@
                 </div>
 
                 
-                <div class="row">
-                    <div class="col-sm-9">
-                        <b>所属部门：</b>
-                        <select class="form-control" name="department_id">
-
-                            @if(empty($departmentList))
-                                <option value="0">无</option>
-                            @endif
-
-                            @foreach($departmentList as $values)
-                                <option value="{{ $values['id'] }}">{{ $values['name'] }}</option>
-                            @endforeach
-
-                        </select>
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="col-sm-9">

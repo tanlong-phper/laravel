@@ -14,16 +14,6 @@
                     {{ csrf_field() }}
                     <h4 class="bg-info" style="padding:10px; font-size:14px;">账号搜索</h4>
                     <div class="row">
-                        <div class="col-sm-2">
-                            <label><b>所属部门：</b></label>
-                            <select class="form-control" name="department_id">
-                                <option value="0">不限</option>
-                                @foreach($departmentList as $values)
-                                    <option value="{{ $values['id'] }}" @if(isset($_REQUEST['department_id']) && $_REQUEST['department_id'] == $values['id']) selected @endif>{{ $values['name'] }}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
 
                         <div class="col-sm-2">
                             <label><b>用户角色：</b> </label>
@@ -45,7 +35,7 @@
                             </select>
 
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-5">
                             <label><b>关键词搜索</b></label>
                             <select class="form-control" name="keyword_type">
                                 <option value="name">姓名</option>

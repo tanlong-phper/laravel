@@ -41,13 +41,10 @@ class RoleController extends BaseController
     }
 
     public function store(Request $request){
-        $id = Role::getNextSeq();
         $data = [
-            'id' =>$id,
             'name' =>$request->name,
             'pid' =>$request->pid,
             'status' =>$request->status,
-            'department_id' =>$request->department_id,
             'menu_role_id' =>empty($request->menu_role_id) ? '' : implode(',', $request->menu_role_id)
         ];
         $rs = Role::insert($data);
@@ -72,7 +69,6 @@ class RoleController extends BaseController
         $data['name'] = $request->name;
         $data['pid'] = $request->pid;
         $data['status'] = $request->status;
-        $data['department_id'] = $request->department_id;
         $data['menu_role_id'] = empty($request->menu_role_id) ? '' : implode(',', $request->menu_role_id);
 
         Role::where('id', $request->id)->update($data);
