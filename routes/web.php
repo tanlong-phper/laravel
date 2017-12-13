@@ -258,8 +258,18 @@ Route::group(['prefix'=>'article'],function() {
 //房源管理
 Route::group(['prefix'=>'house'],function() {
     $controller = 'House\HouseController@';
-    //房源列表
+    #房源列表
     Route::get('houseLister',$controller.'houseLister');
+    #房源添加表单
+    Route::get('houseAdd',$controller.'houseAdd');
+    #房源添加表单提交
+    Route::post('houseAdd/save',$controller.'save');
+    #房源更新列表
+    Route::get('updateList',$controller.'updateList');
+    #房源更新详细列举
+    Route::get('updateList/detail/{id}',$controller.'detail');
+    #Ajax请求删除图片
+    Route::any('updateList/delete/{id}',$controller.'deleteImg');
 });
 
 
