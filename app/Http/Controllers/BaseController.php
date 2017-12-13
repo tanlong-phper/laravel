@@ -81,6 +81,15 @@ class BaseController extends Controller
         });
     }
 
+
+    protected function getOrderStatus($status = ''){
+        $order_status = DB::table('order_status')->pluck('order_status','id')->toArray();
+        if($status !== ''){
+            return isset($order_status[$status]) ? $order_status[$status] : '';
+        }
+        return $order_status;
+    }
+
     /**
      * 获取所有菜单
      * @param bool $tree   是否转换成树形

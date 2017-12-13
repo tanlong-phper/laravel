@@ -47,23 +47,6 @@
                     </div>
                 </div>
 
-                
-                <div class="row">
-                    <div class="col-sm-9">
-                        <b>所属部门：</b>
-                        <select class="form-control" name="department_id">
-
-                            @if(empty($departmentList))
-                                <option value="0">无</option>
-                            @endif
-
-                            @foreach($departmentList as $values)
-                                <option value="{{ $values['id'] }}" @if($lists->department_id == $values['id']) selected @endif>{{ $values['name'] }}</option>
-                            @endforeach
-
-                        </select>
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="col-sm-9">

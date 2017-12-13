@@ -21,9 +21,6 @@ class AccountController extends BaseController
     public function index(Request $request){
         $where = [];
         if(isset($request->search)){
-            if(!empty($request->department_id)){
-                $where['department_id'] = $request->department_id;
-            }
             if(!empty($request->role_id)){
                 $where['role_id'] = $request->role_id;
             }
@@ -42,18 +39,12 @@ class AccountController extends BaseController
 
 
         foreach($account_lists as &$value){
-            $value->parse_department_id = DB::table('departments')->where('id',$value->department_id)->value('name');
             $value->parse_role_id = DB::table('roles')->where('id',$value->role_id)->value('name');
             $value->parse_status = isset($this->account_status[$value->status]) ? $this->account_status[$value->status] : '未知';
-
-            if($value->pid != 0){
-                $value->parent_depart_name  = Account::where('id',$value->pid)->value('name');
-            }
         }
-        $departmentList = $this->getSelectList('departments');
         $roleList = $this->getSelectList('roles');
 
-        return view('account.account_index', ['account_lists' => $account_lists, 'departmentList'=>$departmentList,'roleList'=>$roleList]);
+        return view('account.account_index', ['account_lists' => $account_lists, 'roleList'=>$roleList]);
     }
 
     public function create(){
@@ -64,14 +55,13 @@ class AccountController extends BaseController
     }
 
     public function store(Request $request){
-        $id = Account::getNextSeq();
         $data = [
-            'id' => $id,
             'name' => $request->name,
             'username' => $request->username,
+            'tel' => $request->tel,
+            'area' => $request->area,
             'passwd' => md5($request->passwd),
             'status' => $request->status,
-            'department_id' => $request->department_id,
             'role_id' => $request->role_id,
         ];
 
@@ -85,9 +75,8 @@ class AccountController extends BaseController
 
     public function edit($id){
         $lists = Account::find($id);
-        $departmentList = $this->getSelectList('departments');
         $roleList = $this->getSelectList('roles');
-        return view('account.account_edit',['lists'=>$lists, 'departmentList'=>$departmentList,'roleList'=>$roleList]);
+        return view('account.account_edit',['lists'=>$lists, 'roleList'=>$roleList]);
     }
 
     public function update(Request $request){
@@ -95,7 +84,6 @@ class AccountController extends BaseController
         $data['name'] = $request->name;
         $data['username'] = $request->username;
         $data['status'] = $request->status;
-        $data['department_id'] = $request->department_id;
         $data['role_id'] = $request->role_id;
 
         Account::where('id', $request->id)

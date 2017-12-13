@@ -22,15 +22,7 @@
                 </h4>
 
                 <div class="row ">
-                    <div class="col-sm-2">
-                        <label><b>部门状态：</b></label>
-                        <select class="form-control">
-                            <option>不限</option>
-                        </select>
-
-                    </div>
-
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                         <label><b>创建时间：</b> </label>
                         <input type="text"  class="form-control"  data-provide="datepicker" data-date-format="yyyy-mm-dd" value="{{ date('Y-m-d') }}">
                         &nbsp; 至&nbsp;
@@ -47,7 +39,7 @@
                 </div>
 
                 <h4 class="bg-info" style="padding:5px 10px; font-size:14px; overflow:hidden;">
-                    <span style="line-height:34px;">部门列表</span>
+                    <span style="line-height:34px;">角色列表</span>
                     <div style="float:right;">
                         <a href="/account/role/create" type="button" class="btn btn-default">新增角色</a>
                         <button type="button" class="btn btn-default">导出EXCEL</button>

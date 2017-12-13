@@ -40,19 +40,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">选择部门：</label>
+                    <label for="inputEmail3" class="col-sm-2 control-label">联系方式：</label>
                     <div class="col-sm-4">
-                        <select class="form-control" name="department_id">
-
-                            @if(empty($departmentList))
-                                <option value="0">无</option>
-                            @endif
-
-                            @foreach($departmentList as $values)
-                                <option value="{{ $values['id'] }}" @if($lists->department_id == 1) selected  @endif>{{ $values['name'] }}</option>
-                            @endforeach
-
-                        </select>
+                        <input type="text" name="tel" value="{{ $lists->tel }}"  class="form-control" id="inputEmail3" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">区域：</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="area" value="{{ $lists->area }}"  class="form-control" id="inputEmail3" placeholder="">
                     </div>
                 </div>
                 <div class="form-group">

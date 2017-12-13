@@ -36,8 +36,10 @@ class OrderController extends BaseController
      */
     public function index(Request $request)
     {
+
+        $order_status = $this->getOrderStatus();
         $where = [];
-        $pay_status = $request->input('pay_status');
+        /*$pay_status = $request->input('pay_status');
         $status = $request->input('status');
         $order_no = $request->input('order_no');
         unset($_REQUEST['_token']);
@@ -61,36 +63,13 @@ class OrderController extends BaseController
             }
             $where[] = ['create_time', '>=', $request->begin_time];
             $where[] = ['create_time', '<=', $request->end_time];
-        }
+        }*/
 
-        $order_list = DB::table('tbuy_order')
-            ->join('tbuy_order_details', 'tbuy_order.order_id', '=', 'tbuy_order_details.order_id')
-            ->join('tnet_reginfo', 'tbuy_order.node_id', '=', 'tnet_reginfo.nodeid')
-            ->join('tbuy_order_consignee', 'tbuy_order.order_id', '=', 'tbuy_order_consignee.order_id')
-            ->where($where)
-            ->select('tnet_reginfo.nodename','tbuy_order_details.postage','tbuy_order_consignee.consignee_name','tbuy_order.order_id', 'tbuy_order_details.details_id', 'tbuy_order.order_no', 'tbuy_order.node_id', 'tbuy_order.create_time', 'tbuy_order.pay_time', 'tbuy_order.pay_type_group', 'tbuy_order.status as pay_status', 'tbuy_order_details.product_name', 'tbuy_order_details.product_id', 'tbuy_order_details.amount', 'tbuy_order_details.price', 'tbuy_order_details.buy_count','tbuy_order_details.status', 'tbuy_order_details.sku_remarks', 'tnet_reginfo.nodecode')
-            ->orderBy('order_id', 'desc')
-            ->paginate(20);
-
-        foreach ($order_list as &$val) {
-            $val->price = round($val->price, 2);
-            $pay_type_group = json_decode($val->pay_type_group, true);
-            $str = '';
-            foreach ($pay_type_group as $k => $v) {
-                $str.= $v['Remarks'] . ':' . $v['PayAmount']/ 100 . '，';
-            }
-            $val->pay_group = trim($str, '，');
-            $val->supplier_name = DB::table('tbuy_product')->join('finance_supplier','tbuy_product.supplier_id','=','finance_supplier.supplier_id')->where('product_id',$val->product_id)->value('finance_supplier.shortname');
-            $val->product_image = DB::table('tbuy_product_img')->where('product_id',$val->product_id)->value('img_url');
-            $logistics = DB::table('tbuy_logistics')->where('details', $val->details_id)->first();
-            if(!empty($logistics)){
-                $val->expressData['express_company'] = $logistics->express_company;
-                $val->expressData['express_no'] = $logistics->express_no;
-            }
-        }
+        $order_list = DB::table('order')->where($where)->orderBy('order_id', 'desc')->paginate(20);
 
 
-        return view('order.order.index',['data'=>$order_list,'order_no'=>$order_no,'orderStatus'=>$this->orderStatus, 'pay_status' => $pay_status, 'status' => $status,'payStatus'=>$this->payStatus]);
+
+        return view('order.order.index',['data'=>$order_list,'order_status'=>$order_status]);
     }
 
 

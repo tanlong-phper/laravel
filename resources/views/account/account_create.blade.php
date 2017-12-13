@@ -37,6 +37,18 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">联系方式：</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="tel" class="form-control" id="inputEmail3" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">区域：</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="area" class="form-control" id="inputEmail3" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">账号状态：</label>
                     <div class="col-sm-4">
                         <select class="form-control" name="status">
@@ -45,22 +57,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">选择部门：</label>
-                    <div class="col-sm-4">
-                        <select class="form-control" name="department_id">
 
-                            @if(empty($departmentList))
-                                <option value="0">无</option>
-                            @endif
-
-                            @foreach($departmentList as $values)
-                                <option value="{{ $values['id'] }}">{{ $values['name'] }}</option>
-                            @endforeach
-
-                        </select>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">选择角色：</label>
                     <div class="col-sm-4">
