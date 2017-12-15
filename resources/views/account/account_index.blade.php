@@ -38,9 +38,9 @@
                         <div class="col-sm-5">
                             <label><b>关键词搜索</b></label>
                             <select class="form-control" name="keyword_type">
-                                <option value="name">姓名</option>
+                                <option value="name" @if(Request::get('keyword_type') == 'name') {{ Request::get('keyword_type')  }} @endif>姓名</option>
                             </select>
-                            <input type="text" class="form-control" name="keyword" placeholder="">
+                            <input type="text" class="form-control" name="keyword" value="{{ Request::get('keyword') }}" placeholder="">
 
                         </div>
                         <div class="col-sm-2">
@@ -93,6 +93,7 @@
                                aria-describedby="example1_info">
                             <thead>
                             <tr role="row">
+                                <th style="width:20px;"><input type="checkbox" name="" class="check-all" id=""></th>
                                 <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
                                     aria-sort="ascending"
                                     aria-label="Rendering engine: activate to sort column descending"
@@ -107,12 +108,16 @@
                                     账号
                                 </th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
-                                         aria-label="CSS grade: activate to sort column ascending" style="width: 111px;">
-                                    所属部门
+                                    aria-label="CSS grade: activate to sort column ascending" style="width: 111px;">
+                                    用户角色
                                 </th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
                                     aria-label="CSS grade: activate to sort column ascending" style="width: 111px;">
-                                    用户角色
+                                    区域
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
+                                    aria-label="CSS grade: activate to sort column ascending" style="width: 111px;">
+                                    联系方式
                                 </th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
                                     aria-label="CSS grade: activate to sort column ascending" style="width: 111px;">
@@ -133,13 +138,15 @@
                             @foreach($account_lists as $value)
 
                                 <tr role="row">
+                                    <td><input type="checkbox" name="" class="ids" id=""></td>
                                     <td class="sorting_1">{{ $value->id }}</td>
                                     <td>{{ $value->name }}</td>
                                     <td>{{ $value->username }}</td>
-                                    <td>{{ $value->parse_department_id }}</td>
                                     <td>{{ $value->parse_role_id }}</td>
+                                    <td>{{ $value->area }}</td>
+                                    <td>{{ $value->tel }}</td>
                                     <td>{{ $value->parse_status }}</td>
-                                    <td></td>
+                                    <td>{{ date('Y-m-d H:i:s',$value->create_time) }}</td>
                                     <td><span>
                                         <a href="{{ url('account/user/updateStatus',['id'=>$value->id,'status'=>$value->status]) }}" class="layer-get">
                                             @if($value->status) 停用 @else 启用 @endif

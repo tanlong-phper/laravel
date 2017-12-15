@@ -28,15 +28,10 @@ class AccountController extends BaseController
                 $where['status'] = $request->status;
             }
             if(!empty($request->keyword)){
-                $where[$request->keyword_type] = ['LIKE' => '%'.$request->keyword.'%' ];;
+                $where[] = [$request->keyword_type,'LIKE', '%'.$request->keyword.'%' ];;
             }
         }
-        if(!empty($where)){
-            $account_lists = Account::where($where)->orderBy('id')->paginate(10);
-        }else{
-            $account_lists = Account::orderBy('id')->paginate(10);
-        }
-
+        $account_lists = Account::where($where)->orderBy('id')->paginate(10);
 
         foreach($account_lists as &$value){
             $value->parse_role_id = DB::table('roles')->where('id',$value->role_id)->value('name');
@@ -63,6 +58,8 @@ class AccountController extends BaseController
             'passwd' => md5($request->passwd),
             'status' => $request->status,
             'role_id' => $request->role_id,
+            'create_time' => time(),
+            'update_time' => time(),
         ];
 
         $rs = Account::insert($data);
@@ -85,6 +82,9 @@ class AccountController extends BaseController
         $data['username'] = $request->username;
         $data['status'] = $request->status;
         $data['role_id'] = $request->role_id;
+        $data['tel'] = $request->tel;
+        $data['area'] = $request->area;
+        $data['update_time'] = time();
 
         Account::where('id', $request->id)
             ->update($data);
