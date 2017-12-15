@@ -8,7 +8,7 @@
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
-            <a href="{{url('house/houseLister')}}">点击前往列表查看</a>
+            <a href="{{url('house/updateList')}}">点击前往列表查看</a>
         </div>
     @endif
 
@@ -17,8 +17,10 @@
 
 
             <div class="page-container">
-                <form action="{{url('house/houseAdd/save')}}" method="post" id="SUBMIT" class="form form-horizontal" id="form-article-add" enctype="multipart/form-data">
+                <form action="{{url('house/updateList/uSave')}}" method="post" id="SUBMIT" class="form form-horizontal" id="form-article-add" enctype="multipart/form-data">
                     {{ csrf_field() }}
+                    <input type="hidden" value="{{$houseMsg->msgid}}" name="msgId">
+                    <input type="hidden" value="{{$houseMsg->landid}}" name="landId">
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房源名称：</label>
                         <div class="formControls col-xs-8 col-sm-9">
@@ -66,32 +68,33 @@
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房屋设备：</label>
                         <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                            <?php $equipment = explode(',',$houseMsg->house_facility);?>
                             <div class="check-box">
-                                <input name="house_facility[]" value='洗衣机' type="checkbox" id="checkbox-1">
+                                <input name="house_facility[]" @if(isset($equipment['0'])) checked="checked" @endif value='洗衣机' type="checkbox" id="checkbox-1">
                                 <label for="checkbox-1">洗衣机</label>
                             </div>
                             <div class="check-box">
-                                <input name="house_facility[]" value='空调' type="checkbox" id="checkbox-2">
+                                <input name="house_facility[]" @if(isset($equipment['1'])) checked="checked" @endif value='空调' type="checkbox" id="checkbox-2">
                                 <label for="checkbox-2">空调</label>
                             </div>
                             <div class="check-box">
-                                <input name="house_facility[]" value='暖气' type="checkbox" id="checkbox-3">
+                                <input name="house_facility[]" @if(isset($equipment['2'])) checked="checked" @endif value='暖气' type="checkbox" id="checkbox-3">
                                 <label for="checkbox-3">暖气</label>
                             </div>
                             <div class="check-box">
-                                <input name="house_facility[]" value='床' type="checkbox" id="checkbox-4">
+                                <input name="house_facility[]" @if(isset($equipment['3'])) checked="checked" @endif value='床' type="checkbox" id="checkbox-4">
                                 <label for="checkbox-4">床</label>
                             </div>
                             <div class="check-box">
-                                <input name="house_facility[]" value='厨房' type="checkbox" id="checkbox-5">
+                                <input name="house_facility[]" @if(isset($equipment['4'])) checked="checked" @endif value='厨房' type="checkbox" id="checkbox-5">
                                 <label for="checkbox-5">厨房</label>
                             </div>
                             <div class="check-box">
-                                <input name="house_facility[]" value='衣柜' type="checkbox" id="checkbox-6">
+                                <input name="house_facility[]" @if(isset($equipment['5'])) checked="checked" @endif value='衣柜' type="checkbox" id="checkbox-6">
                                 <label for="checkbox-6">衣柜</label>
                             </div>
                             <div class="check-box">
-                                <input name="house_facility[]" value='冰箱' type="checkbox" id="checkbox-7">
+                                <input name="house_facility[]" @if(isset($equipment['6'])) checked="checked" @endif value='冰箱' type="checkbox" id="checkbox-7">
                                 <label for="checkbox-7">冰箱</label>
                             </div>
                         </div>
@@ -203,7 +206,7 @@
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房东联系地址：</label>
                         <div class="formControls col-xs-8 col-sm-9">
-                            <input type="text" name="landlord_site" value="{{$houseMsg->landlord_site}}" id="datemin" class="input-text Wdate" style="width:220px;">
+                            <input type="text" name="landlord_site" value="{{$houseMsg->landlord_site}}" id="datemin" class="input-text Wdate">
                         </div>
                     </div>
                     <div class="row cl">
@@ -218,7 +221,7 @@
                         <div class="formControls col-xs-8 col-sm-9">
                             <table>
                                 @foreach($imgArr as $value)
-                                <tr id="tr_{{$value->migid}}">
+                                <tr id="tr_{{$value->imgid}}">
 
                                     <td>
                                         <img style="width:80px; height:120px;" src="{{asset('uploads')}}/{{$value->house_imagename}}" alt="">
@@ -234,7 +237,7 @@
                         <label class="form-label col-xs-4 col-sm-2">选择图片：</label>
                         <div class="formControls col-xs-8 col-sm-9">
                         <span class="btn-upload form-group">
-					        <input class="input-text upload-url" type="text" id="uploadfile-2" readonly  datatype="*" nullmsg="请添加附件！" style="width:220px">
+					        <input class="input-text upload-url" type="text" name="uploadfile-2" id="uploadfile-2" readonly  datatype="*" nullmsg="请添加附件！" style="width:200px">
 					        <a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
 					        <input type="file" multiple name="upload[]" class="input-file">
                         </span>
@@ -257,15 +260,18 @@
 @stop
 
 @section('js')
-    <script src="{{ asset('house/js/jquery.js') }}"></script>
+    <script src="{{asset('house/js/jquery.min.js')}}"></script>
+    <script src="{{asset('house/js/H-ui.js')}}"></script>
     <script type="text/javascript">
+
         function delimage(imageid) {
             $.ajax({
-                url:"{{url('house/updateList/delete')}}",
+                url:"{{url('house/updateList/del')}}",
                 data:'id='+imageid,
                 type:'get',
                 success:function (re) {
-                    if (re == '1') {
+                    console.log(re);
+                    if (re != '0') {
                         $("#tr_"+imageid).remove();
                     }
                 }

@@ -12,13 +12,7 @@
 				<div class="order">{{ $values['id'] }}</div>
 				<div class="order"><input type="text" name="sort_number" class="text input-mini" value="{{ $values['sort_number'] }}"></div>
 				<div class="order">
-					@if(isset($cateStatus[$values['status']]))
-						@if($values['status'] == 0)
-							<a href="{{ url('category/menu/updateStatus') }}?status={{ $values['status'] }}&id={{ $values['id'] }}" status="" class="update_status" ><i style="color:#ccc;">{{ $cateStatus[$values['status']] }}</i></a>
-						@else
-							<a href="{{ url('category/menu/updateStatus') }}?status={{ $values['status'] }}&id={{ $values['id'] }}" class="update_status" >{{ $cateStatus[$values['status']] }}</a>
-						@endif
-					@endif
+					
 				</div>
 				<div class="name">
 					<span class="tab-sign"></span>

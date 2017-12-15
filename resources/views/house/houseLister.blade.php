@@ -56,34 +56,20 @@
 								<tr class="text-c">
 									<td><input type="checkbox" value="{{$val->msgid}}" name=""></td>
 									<td>{{$val->msgid}}</td>
-									<td class="text-l"><u style="cursor:pointer" class="text-primary" title="查看">{{$val->house_name}}</u></td>
+									<td class="text-l"><a href="{{url('house/houseLister/detail',['id'=>$val->msgid])}}"><u style="cursor:pointer" class="text-primary" title="查看">{{$val->house_name}}</u></a></td>
 									<td>{{$val->house_structure}}</td>
 									<td>{{$val->house_price}}</td>
 									<td><span>{{$val->house_size}}</span> /平方</td>
-									<td><?php $equipment = json_decode($val->house_facility); foreach ($equipment as $value){ echo '{'.$value.'}'; }?></td>
+									<td><?php $equipment = explode(',',$val->house_facility); foreach ($equipment as $value){ echo $value.'&nbsp;&nbsp;&nbsp;'; }?></td>
 									<td class="text-l"><u style="cursor:pointer" class="text-primary" title="查看">{{$val->house_location}}</u></td>
 									<td>{{$val->house_rise}}<b style="font-size:15px;">~</b>{{$val->house_duration}}</td>
 									<td class="td-status"><span class="label label-success radius">{{$val->house_status}}</span></td>
 									<td class="f-14 td-manage">
-										<a style="text-decoration:none" class="ml-5" href="" title="详细信息">详细信息</a>
+										<a style="text-decoration:none" class="ml-5" href="{{url('house/houseLister/detail',['id'=>$val->msgid])}}" title="详细信息">详细信息</a>
 									</td>
 							    </tr>
 							@endforeach
-							{{--<tr class="text-c">
-								<td><input type="checkbox" value="" name=""></td>
-								<td>10002</td>
-								<td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="article_edit('查看','article-zhang.html','10002')" title="查看">资讯标题</u></td>
-								<td>行业动态</td>
-								<td>H-ui</td>
-								<td>2014-6-11 11:11:42</td>
-								<td>21212</td>
-								<td>2014-6-11 11:11:42</td>
-								<td>21212</td>
-								<td class="td-status"><span class="label label-success radius">草稿</span></td>
-								<td class="f-14 td-manage"><a style="text-decoration:none" onClick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
-									<a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>
-									<a style="text-decoration:none" class="ml-5" onClick="article_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
-							</tr>--}}
+
 							</tbody>
 						</table>
 					</div>

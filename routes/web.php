@@ -258,6 +258,7 @@ Route::group(['prefix'=>'article'],function() {
 //房源管理
 Route::group(['prefix'=>'house'],function() {
     $controller = 'House\HouseController@';
+    $typeController = 'House\TypeController@';
     #房源列表
     Route::get('houseLister',$controller.'houseLister');
     #房源添加表单
@@ -269,7 +270,19 @@ Route::group(['prefix'=>'house'],function() {
     #房源更新详细列举
     Route::get('updateList/detail/{id}',$controller.'detail');
     #Ajax请求删除图片
-    Route::any('updateList/delete/{id}',$controller.'deleteImg');
+    Route::get('updateList/del',$controller.'del');
+    #房源信息修改表单提交
+    Route::post('updateList/uSave',$controller.'uSave');
+    #房源详细信息
+    Route::get('houseLister/detail/{id}',$controller.'houseDetail');
+    #房源类型
+    Route::get('type',$typeController.'index');
+    #房源类型添加
+    Route::get('type/add',$typeController.'add');
+    #房源类型添加表单提交
+    Route::post('type/add/save',$typeController.'save');
+    #
+    Route::any('type/tree',$typeController.'tree');
 });
 
 

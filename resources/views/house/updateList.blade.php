@@ -49,15 +49,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($houseObj as $key => $val)
+                           @foreach($houseObj as $key => $val)
                                 <tr class="text-c">
                                     <td><input type="checkbox" value="{{$val->msgid}}" name=""></td>
                                     <td>{{$val->msgid}}</td>
-                                    <td class="text-l"><u style="cursor:pointer" class="text-primary" title="查看">{{$val->house_name}}</u></td>
+                                    <td class="text-l"><a href="{{url('house/houseLister/detail',['id'=>$val->msgid])}}"><u style="cursor:pointer" class="text-primary" title="查看">{{$val->house_name}}</u></a></td>
                                     <td>{{$val->house_structure}}</td>
                                     <td>{{$val->house_price}}</td>
                                     <td><span>{{$val->house_size}}</span> /平方</td>
-                                    <td><?php $equipment = json_decode($val->house_facility); foreach ($equipment as $value){ echo '{'.$value.'}'; }?></td>
+                                    <td><?php $equipment = explode(',',$val->house_facility); foreach ($equipment as $value){ echo $value.'&nbsp;&nbsp;&nbsp;'; }?></td>
                                     <td class="text-l"><u style="cursor:pointer" class="text-primary" title="查看">{{$val->house_location}}</u></td>
                                     <td>{{$val->house_rise}}<b style="font-size:15px;">~</b>{{$val->house_duration}}</td>
                                     <td class="td-status"><span class="label label-success radius">{{$val->house_status}}</span></td>
