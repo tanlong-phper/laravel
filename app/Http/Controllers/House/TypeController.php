@@ -41,5 +41,29 @@ class TypeController extends BaseController {
 			return redirect('house/type/add',['pid'=>$request->pid])->with('error','添加分类失败！');
 		}
 	}
+	/**
+	 *删除
+	 */
+	public function delete($id){
+		$rs = House_type::where('id', $id)->delete();
+		if($rs){
+			return $this->ajaxSuccess('删除分类成功！', url('/house/type'));
+		}
+		return $this->ajaxError('删除分类失败！', url('/house/type'));
+	}
+	/**
+	 *修改分类
+	 */
+	public function update(Request $request){
+		if(!empty($request->id)){
+			$data = ['sort_number'=>$request->sort_number, 'name'=>$request->name,'url'=>$request->url];
+			$rs = DB::table('house_type')->where('id',$request->id)->update($data);
+			if($rs){
+				return $this->ajaxSuccess('编辑成功!');
+			}else{
+				return $this->ajaxError('编辑失败!');
+			}
+		}
+	}
 
 }

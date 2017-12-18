@@ -283,6 +283,10 @@ Route::group(['prefix'=>'house'],function() {
     Route::post('type/add/save',$typeController.'save');
     #
     Route::any('type/tree',$typeController.'tree');
+    #删除
+    Route::any('type/delete/{id}',$typeController.'delete');
+    #修改
+    Route::any('type/update',$typeController.'update');
 });
 
 

@@ -43,16 +43,14 @@
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <span class="select-box">
 				                <select name="house_type" class="select">
-                                    <option value="别墅">别墅</option>
-                                    <option value="公寓">公寓</option>
-                                    <option value="寄宿">寄宿家庭</option>
+                                    {!! $optionStr !!}}
                                 </select>
 				            </span>
                         </div>
                     </div>
 
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">位置：</label>
+                        <label class="form-label col-xs-4 col-sm-2">国家城市：</label>
                         <div class="formControls col-xs-8 col-sm-9">
                             <select id="country" class="dept_select"  name="state"></select>
                             <select id="province" class="dept_select"  name="province"></select>
@@ -312,16 +310,20 @@
                 $(".date_checkbox").change(function (){
                     if(this.checked){
                         $(this).next().next().removeProp('disabled');
-                        $(".information").change(function (){
-                            var timeVal = $(this).val();
-                            var val = $(this).prev().prev().val()+timeVal;
-                        });
                     }else{
                         $(this).next().next().prop('disabled',true);
                         $(this).next().next().val('');
                     }
                 })
-            })
+            });
+            $(function (){
+                $(".information").blur(function (){
+                    var timeVal = $(this).val();
+                    var val = $(this).prev().prev().val()+'步行'+timeVal+'分钟';
+                    $(this).prev().prev().val(val);
+                });
+            });
+
         </script>
         <script>
             //常规用法

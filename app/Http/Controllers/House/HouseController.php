@@ -5,6 +5,7 @@ use App\Http\Controllers\BaseController;
 use App\Models\House_message;
 use App\Models\House_image;
 use App\Models\Landlord_message;
+use App\Models\House_type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
@@ -22,24 +23,41 @@ class HouseController extends BaseController {
 	 *房源添加
 	 */
 	public function houseAdd() {
-		return view('house.houseAdd');
+		$houseType = new House_type();
+		$optionStr = $houseType->showOptionVstr();
+
+		return view('house.houseAdd',['optionStr'=>$optionStr]);
 	}
 	/**
 	 *房源添加表单提交
 	 */
 	public function save(Request $param) {
 		echo '<pre>';
-		var_dump(Input::all());
+		$houseData = Input::all();
+		$houseData['rim_message'] = implode(',',$houseData['peripheral_information']);
+		$houseData['house_facility'] = isset($houseData['house_facility']) ? implode(',',$houseData['house_facility']) : '';
+		$houseData['landlord_id'] = $houseData['landlord_identity'];
+		$houseData['intermediary_id'] = Session::get('user_id') ? Session::get('user_id') : '';
+		unset( $houseData['_token'],
+				$houseData['peripheral_information'],
+				$houseData['landlord_name'],
+				$houseData['landlord_identity'],
+				$houseData['landlord_email'],
+				$houseData['landlord_phone'],
+				$houseData['landlord_sex'],
+				$houseData['landlord_site'],
+				$houseData['landlord_remark']);
+		var_dump($houseData);
 		exit();
 		$houseMessage = new House_message();
 		$houseData = [
 		    'house_name' => htmlspecialchars($param->house_name),           //房源名称
 		    'house_location' => htmlspecialchars($param->house_location),   //房源地址
 			'house_structure' => htmlspecialchars($param->house_structure), //房源结构
-			'house_price' => htmlspecialchars($param->house_price),        //房租价格
+			'house_price' => htmlspecialchars($param->house_price),         //房租价格
 			'house_size' => htmlspecialchars($param->house_size),           //房子大小/平方米
 			'house_type' => htmlspecialchars($param->house_type),           //房源类型
-			'house_facility' => implode(',',$param->house_facility),          //房屋设备 数组转json
+			'house_facility' => implode(',',$param->house_facility),        //房屋设备 数组转json
 			'house_keyword' => htmlspecialchars($param->house_keyword),     //房源信息关键字
 			'house_brief' => htmlspecialchars($param->house_brief),         //房源信息简介
 			'house_rise' => htmlspecialchars($param->house_rise),           //房源起租期

@@ -5,13 +5,6 @@
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/module.css') }}">
 
-    <style>
-        /* 二级分类不显示加号 */
-        .category > dl > dd > dl > dt .icon-add {
-            display:none;
-        }
-        .main-header .logo { height:51px;}
-    </style>
 
 @stop
 
@@ -49,9 +42,7 @@
                     <div class="fold">折叠</div>
                     <div class="order">ID</div>
                     <div class="order">排序</div>
-                    <div class="order">状态</div>
                     <div class="order" style="    width: 200px; text-align: left;">名称</div>
-                    <div class="order">URL</div>
                 </div>
                 @include('house.type.tree', ['tree' => $tree])
             </div>

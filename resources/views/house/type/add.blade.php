@@ -42,15 +42,7 @@
 
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">状态：</label>
-                    <div class="col-sm-4">
-                        <select class="form-control" name="status">
-                            <option value="1">启用</option>
-                            <option value="0">禁用</option>
-                        </select>
-                    </div>
-                </div>
+
 
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">分类名称：<span style="color:red">*</span></label>

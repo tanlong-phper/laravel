@@ -12,7 +12,7 @@
 				<div class="order">{{ $values['id'] }}</div>
 				<div class="order"><input type="text" name="sort_number" class="text input-mini" value="{{ $values['sort_number'] }}"></div>
 				<div class="order">
-					
+
 				</div>
 				<div class="name">
 					<span class="tab-sign"></span>
