@@ -2,6 +2,11 @@
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('house/css/H-ui.min.css')}}" />
+    <link href="{{asset('house/region/chosen.min.css')}}" rel='stylesheet'>
+    <style type="text/css">
+        .dept_select{min-width: 200px;}
+
+    </style>
 @stop
 
 @section('content')
@@ -22,48 +27,84 @@
                     <input type="hidden" value="{{$houseMsg->msgid}}" name="msgId">
                     <input type="hidden" value="{{$houseMsg->landid}}" name="landId">
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房源名称：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
-                            <input type="text" class="input-text" value="{{$houseMsg->house_name or ''}}" placeholder="3室2厅1厨1卫" id="" name="house_name" >
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房源类型：</label>
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
+                        <span class="select-box">
+				            <select name="house_type" class="select" id="houseTypeVal">
+                                {!! $optionStr !!}}
+                            </select>
+                        </span>
                         </div>
                     </div>
 
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">位置：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <label class="form-label col-xs-4 col-sm-2">国家城市：</label>
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
+                            <select id="country" class="dept_select"  name="state"></select>
+                            <select id="province" class="dept_select"  name="province"></select>
+                            <select id="city" class="dept_select" name="city"></select>
+                        </div>
+                    </div>
+
+                    <div class="row cl">
+                        <label class="form-label col-xs-4 col-sm-2">详细位置：</label>
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="house_location" id="" placeholder="广东省深圳市宝安区西乡街道56栋33号" value="{{$houseMsg->house_location}}" class="input-text">
                         </div>
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房源结构：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="house_structure" id="" placeholder="平面" value="{{$houseMsg->house_structure}}" class="input-text">
                         </div>
                     </div>
                     <div class="row cl">
+                        <label class="form-label col-xs-4 col-sm-2">周边信息：</label>
+                        <div class="formControls col-xs-8 col-sm-9"  style="width:45%;">
+                            <?php $rimMessage = isset($houseMsg->rim_message) ? explode(',',$houseMsg->rim_message) : '';
+                                list(,$supermarket) = isset($rimMessage[0]) ? explode(' ',$rimMessage[0]) : '';
+                                list(,$Chinese) = isset($rimMessage[1]) ? explode(' ',$rimMessage[1]) : '';
+                                list(,$police) = isset($rimMessage[2]) ? explode(' ',$rimMessage[2]) : '';
+                                list(,$public) = isset($rimMessage[3]) ? explode(' ',$rimMessage[3]) : '';
+
+                            ?>
+                            <div class="check-box">
+                                <input name="peripheral_information[]" value='超市 {{$supermarket}}' @if(isset($rimMessage[0])) checked="checked" @endif type="checkbox" class="date_checkbox" id="peripheral-1">
+                                <label for="peripheral-1">超市</label>
+                                <input type="number" name="" id="supermarket" @if(!isset($rimMessage[0])) disabled="disabled" @endif  placeholder="" value="{{$supermarket}}" min="1" max="300" class="input-text information">/分钟
+                            </div>
+                            <div class="check-box">
+                                <input name="peripheral_information[]" value='中餐馆 {{$Chinese}}' @if(isset($rimMessage[1])) checked="checked" @endif type="checkbox" class="date_checkbox" id="peripheral-2">
+                                <label for="peripheral-2">中&nbsp;餐&nbsp;馆</label>&nbsp;
+                                <input type="number" name=""  @if(!isset($rimMessage[1])) disabled="disabled" @endif placeholder="" value="{{$Chinese}}" min="1" max="300" class="input-text information">/分钟
+                            </div>
+                            <br>
+                            <div class="check-box">
+                                <input name="peripheral_information[]" value='警局 {{$police}}' @if(isset($rimMessage[2])) checked="checked" @endif type="checkbox" class="date_checkbox" id="peripheral-3">
+                                <label for="peripheral-3">警局</label>
+                                <input type="number" name=""  @if(!isset($rimMessage[2])) disabled="disabled" @endif disabled="disabled" placeholder="" value="{{$police}}" min="0" max="300" class="input-text information">/分钟
+                            </div>
+                            <div class="check-box">
+                                <input name="peripheral_information[]" value='公共交通 {{$public}}' @if(isset($rimMessage[3])) checked="checked" @endif type="checkbox" class="date_checkbox" id="peripheral-4">
+                                <label for="peripheral-4">公共交通</label>
+                                <input type="number" name="" @if(!isset($rimMessage[3])) disabled="disabled" @endif disabled="disabled" placeholder="" value="{{$police}}" min="1" max="300" class="input-text information">/分钟
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房源价格：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
-                            <input type="number" name="house_price" id="" placeholder="" value="{{$houseMsg->house_price}}"  min="0.0" step="0.1"class="input-text" style="width:220px;">元
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
+                            <input type="number" name="house_price" id="" placeholder="" value="{{$houseMsg->house_price}}"  min="0.0" step="0.1"class="input-text" style="width:95%;">元
                         </div>
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房源大小：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
-                            <input type="number" name="house_size" id="" placeholder="" value="{{$houseMsg->house_size}}"  min="0.0" step="0.1"class="input-text" style="width:220px;">平方
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
+                            <input type="number" name="house_size" id="" placeholder="" value="{{$houseMsg->house_size}}"  min="0.0" step="0.1"class="input-text" style="width:95%;">平方
                         </div>
                     </div>
-                    <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房源类型：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
-                <span class="select-box">
-				    <select name="house_type" class="select">
-                        <option @if($houseMsg->house_type == '别墅') selected="selected" @endif value="别墅">别墅</option>
-                        <option @if($houseMsg->house_type == '公寓') selected="selected" @endif value="公寓">公寓</option>
-                        <option @if($houseMsg->house_type == '寄宿家庭') selected="selected" @endif value="寄宿">寄宿家庭</option>
-                    </select>
-				</span>
-                        </div>
-                    </div>
+
 
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房屋设备：</label>
@@ -101,28 +142,30 @@
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">关键字：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="house_keyword" id="" placeholder="多个关键字用英文逗号隔开，限10个关键字" value="{{$houseMsg->house_keyword}}" maxlength="10" class="input-text">
                         </div>
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房源简介：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <textarea name="house_brief" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符">{{$houseMsg->house_brief}}</textarea>
                             <p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
                         </div>
                     </div>
 
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">起租期：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
-                            <input type="text" name="house_rise" id="datemin" value="{{$houseMsg->house_rise}}" class="input-text Wdate" style="width:220px;">
-                        </div>
-                    </div>
-                    <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">租期时长：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
-                            <input type="text" name="house_duration" value="{{$houseMsg->house_duration}}" id="datemin" class="input-text Wdate" style="width:220px;">
+                        <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+
+                            <div class="check-box">
+                                <input type="text" name="house_rise" id="house_rise" placeholder="" value="" class="input-text" style="display:inline-block">
+                            </div>
+                            <span>起租期</span>
+                            <div class="check-box">
+                                <input type="text" name="house_duration" id="house_duration" class="input-text Wdate">
+                            </div>
+                            <span>最长租期</span>
                         </div>
                     </div>
                     <div class="row cl">
@@ -162,25 +205,25 @@
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房东姓名：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="landlord_name" value="{{$houseMsg->landlord_name}}" id="datemin" class="input-text Wdate" style="width:220px;">
                         </div>
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房东证件号：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="landlord_identity" value="{{$houseMsg->landlord_identity}}" id="datemin" class="input-text Wdate" style="width:220px;">
                         </div>
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房东邮箱：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="landlord_email" value="{{$houseMsg->landlord_email}}" id="datemin" class="input-text Wdate" style="width:220px;">
                         </div>
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房东电话：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="landlord_phone" value="{{$houseMsg->landlord_phone}}" id="datemin" class="input-text Wdate" style="width:220px;">
                         </div>
                     </div>
@@ -205,20 +248,19 @@
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房东联系地址：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="landlord_site" value="{{$houseMsg->landlord_site}}" id="datemin" class="input-text Wdate">
                         </div>
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房东备注：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <textarea name="landlord_remark" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符">{{$houseMsg->landlord_remark}}</textarea>
-                            <p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
                         </div>
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">图片操作：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <table>
                                 @foreach($imgArr as $value)
                                 <tr id="tr_{{$value->imgid}}">
@@ -235,7 +277,7 @@
                     </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">选择图片：</label>
-                        <div class="formControls col-xs-8 col-sm-9">
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                         <span class="btn-upload form-group">
 					        <input class="input-text upload-url" type="text" name="uploadfile-2" id="uploadfile-2" readonly  datatype="*" nullmsg="请添加附件！" style="width:200px">
 					        <a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
@@ -260,6 +302,17 @@
 @stop
 
 @section('js')
+    {{--日期用--}}
+    <script type="text/javascript" src="{{asset('house/laydate/laydate.js')}}" ></script>
+    <script>
+        //常规用法
+        laydate.render({
+            elem: '#house_rise'
+        });
+        laydate.render({
+            elem: '#house_duration'
+        });
+    </script>
     <script src="{{asset('house/js/jquery.min.js')}}"></script>
     <script src="{{asset('house/js/H-ui.js')}}"></script>
     <script type="text/javascript">
@@ -277,6 +330,95 @@
                 }
             })
         }
+
     </script>
+    <script>
+        $(function (){
+            $(".date_checkbox").change(function (){
+                if(this.checked){
+                    $(this).next().next().removeProp('disabled');
+                }else{
+                    $(this).next().next().prop('disabled',true);
+                    $(this).next().next().val('');
+                }
+            })
+        });
+        $(function (){
+            $(".information").blur(function (){
+                var checkbox = $(this).prev().prev();
+                var timeVal = $(this).val();
+                var val = checkbox.val();
+                var arr=val.split(" ");
+                var str = arr[0];
+                checkbox.val(str+' '+timeVal);
+            });
+        });
+
+    </script>
+    <script type="text/javascript" src="{{asset('house/region/chosen.jquery.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('house/region/area_chs.js')}}"></script>
+
+    <script type="text/javascript">
+        var areaObj = [];
+        function initLocation(e){
+            var a = 0;
+            for (var m in e) {
+                areaObj[a] = e[m];
+                var b = 0;
+                for (var n in e[m]) {
+                    areaObj[a][b++] = e[m][n];
+                }
+                a++;
+            }
+        }
+    </script>
+
+    <script type="text/javascript" src="{{asset('house/region/location_chs.js')}}"></script>
+    <script type="text/javascript">
+
+        var country = '';
+        for (var a=0;a<=_areaList.length-1;a++) {
+            var objContry = _areaList[a];
+            country += '<option value="'+objContry+'" a="'+(a+1)+'">'+objContry+'</option>';
+        }
+        $("#country").html(country).chosen().change(function(){
+            var a = $("#country").find("option[value='"+$("#country").val()+"']").attr("a");
+            var _province = areaObj[a];
+            var province = '';
+            for (var b in _province) {
+                var objProvince = _province[b];
+                if (objProvince.n) {
+                    province += '<option value="'+objProvince.n+'" b="'+b+'">'+objProvince.n+'</option>';
+                }
+            }
+            if (!province) {
+                province = '<option value="0" b="0">------</option>';
+            }
+            $("#province").html(province).chosen().change(function(){
+                var b = $("#province").find("option[value='"+$("#province").val()+"']").attr("b");
+                var _city = areaObj[a][b];
+                var city = '';
+                for (var c in _city) {
+                    var objCity = _city[c];
+                    if (objCity.n) {
+                        city += '<option value="'+objCity.n+'">'+objCity.n+'</option>';
+                    }
+                }
+                if (!city) {
+                    var city = '<option value="0">------</option>';
+                }
+                $("#city").html(city).chosen().change();
+                $(".dept_select").trigger("chosen:updated");
+            });
+            $("#province").change();
+            $(".dept_select").trigger("chosen:updated");
+        });
+        $("#country").change();
+        document.getElementById('houseTypeVal').value='{{$houseMsg->house_type}}';
+        document.getElementById('country').value='{{$houseMsg->state}}';
+        document.getElementById('province').value='{{$houseMsg->province}}';
+        document.getElementById('city').value='{{$houseMsg->city}}';
+    </script>
+
 @stop
 

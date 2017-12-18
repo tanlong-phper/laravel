@@ -56,7 +56,7 @@ class TypeController extends BaseController {
 	 */
 	public function update(Request $request){
 		if(!empty($request->id)){
-			$data = ['sort_number'=>$request->sort_number, 'name'=>$request->name,'url'=>$request->url];
+			$data = ['sort_number'=>$request->sort_number, 'name'=>$request->name];
 			$rs = DB::table('house_type')->where('id',$request->id)->update($data);
 			if($rs){
 				return $this->ajaxSuccess('编辑成功!');

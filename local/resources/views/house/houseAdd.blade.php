@@ -6,20 +6,9 @@
     <link href="{{asset('house/region/chosen.min.css')}}" rel='stylesheet'>
     <style type="text/css">
         .dept_select{min-width: 200px;}
-        button{
-            padding: 4px 10px;
-            border-radius: 3px;
-            border: 0;
-            background: #444;
-            color: #fff;
-        }
+
     </style>
-    <style type="text/css">
-        body{margin: 0;padding: 0;}
-        .everyWeekDay .weekday,.everyDay .days {/*解决span不支持width属性*/display: -moz-inline-box;display: inline-block;margin: 5px 0 0 20px;text-align: center;width: 20px;border: 1px solid #F7F7F7;cursor: pointer;}
-        .marginTop{margin-top: 5px;}
-        .selectStyle{padding-left: 10px;border: none;border-radius: 3px;outline: none;appearance: none;-moz-appearance: none;-webkit-appearance: none;margin: 0 10px 0 10px;width: 60px;border-color: #0FB9EF;color: #0FB9EF;}
-    </style>
+
 @stop
 
 @section('content')
@@ -319,7 +308,7 @@
             $(function (){
                 $(".information").blur(function (){
                     var timeVal = $(this).val();
-                    var val = $(this).prev().prev().val()+'步行'+timeVal+'分钟';
+                    var val = $(this).prev().prev().val()+'步行 '+timeVal;
                     $(this).prev().prev().val(val);
                 });
             });

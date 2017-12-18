@@ -16,7 +16,7 @@ class HouseController extends BaseController {
 	 */
 	public function houseLister() {
 		$houseMessage = new House_message();
-		$gather = $houseMessage->orderBy('msgid','desc')->paginate(2);
+		$gather = $houseMessage->orderBy('msgid','desc')->paginate(10);
 		return view('house.houseLister',['houseObj'=>$gather]);
 	}
 	/**
@@ -91,10 +91,16 @@ class HouseController extends BaseController {
 	 */
 	public function updateList() {
 		$houseMessage = new House_message();
-		$gather = $houseMessage->orderBy('msgid','desc')->paginate(2);
+		$gather = $houseMessage->orderBy('msgid','desc')->paginate(10);
 		return view('house.updateList',['houseObj'=>$gather]);
 	}
+
+	/**
+	 *房源修改详细页
+	 */
 	public function detail($id) {
+		$houseType = new House_type();
+		$optionStr = $houseType->showOptionGetName();
 		$houseMsg = DB::table('house_message')
 				->join('landlord_message', 'house_message.msgid', '=', 'landlord_message.house_id')
 				->select('house_message.*', 'landlord_message.*')
@@ -102,8 +108,9 @@ class HouseController extends BaseController {
 				->first();
 		$houseImg = new House_image();
 		$imgArr = $houseImg->where('house_msg_id','=',$id)->get();
-		return view('house.updateDetail',['houseMsg'=>$houseMsg,'imgArr'=>$imgArr]);
+		return view('house.updateDetail',['houseMsg'=>$houseMsg,'imgArr'=>$imgArr,'optionStr'=>$optionStr]);
 	}
+
 	/**
 	 *Ajax请求删除图片
 	 */
