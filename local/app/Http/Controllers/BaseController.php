@@ -11,14 +11,9 @@ class BaseController extends Controller
 {
     protected $user_id;
 
-    const ROOT_PATH = '/erp_new/laravel/public';
-
     public function __construct()
     {
-
-
         $this->middleware(function($request,$next){
-
 
             $user_info = $request->session()->get('user_info');
             //没登录返回登录页
@@ -35,10 +30,6 @@ class BaseController extends Controller
             if(strpos($url,'?') !== false){
                 $url = strstr($url, '?', true);
             }
-
-            /*if(self::ROOT_PATH != ''){
-                $url = str_replace(self::ROOT_PATH, '',$url);
-            }*/
 
             //菜单子目录定位了二级目录
             $explode = explode('/', $url);
@@ -60,13 +51,10 @@ class BaseController extends Controller
                     }
                 }
             }
-
             $allow_url = ['home/upload_image'];
             if(in_array(trim($url,'/'),$allow_url)){
                 $if_url = 1;
             }
-
-
 
             //没有权限返回首页
             if($if_url == 0 && $url != '/index.php'){

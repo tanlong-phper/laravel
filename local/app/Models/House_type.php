@@ -21,6 +21,21 @@ class House_type extends Base
 		}
 		return $optionStr;
 	}
+
+	public function showOptionGetName($pid = 0, $num = 0) {
+		$optionStr = '';
+		$arr = $this->where('pid', $pid)->get();
+		$gang = str_repeat('&nbsp;&nbsp;&nbsp;', $num);
+		$num++;
+		foreach ($arr as $value) {
+			$name = $value->name;
+			$pid = $value->id;
+			$optionStr .= "<option value='{$name}'>{$name}</option>";
+			$optionStr .= $this->recursion($pid,$num);
+		}
+		return $optionStr;
+	}
+
 	function showOptionVstr($pid = 0,$num = 0,$fstr = '') {
 		$optionStr = "";
 		$arr = $this->where('pid',$pid)->get();
@@ -36,6 +51,7 @@ class House_type extends Base
 		}
 		return $optionStr;
 	}
+
 	public function recursionArr($pid = 0) {
 		$array = [];
 		$arr = $this->where('pid',$pid)->get();

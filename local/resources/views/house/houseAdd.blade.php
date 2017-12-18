@@ -43,7 +43,7 @@
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <span class="select-box">
 				                <select name="house_type" class="select">
-                                    {!! $optionStr !!}}
+                                    {!! $optionStr !!}
                                 </select>
 				            </span>
                         </div>
@@ -61,7 +61,7 @@
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>详细位置：</label>
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
-                            <input type="text" class="input-text" value="" placeholder="3室2厅1厨1卫" id="house_location" name="house_location" >
+                            <input type="text" class="input-text" value="" placeholder="南山区泰邦科技大厦2308" id="house_location" name="house_location" >
                         </div>
                         <span id="house_locationMsg"></span>
                     </div>

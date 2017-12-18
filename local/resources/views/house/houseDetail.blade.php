@@ -18,11 +18,11 @@
                             <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="4" rowspan
                                 aria-sort="ascending"
                                 aria-label="Rendering engine: activate to sort column descending"
-                                style="width: 50px; font-size:20px;">名称
+                                style="width: 50px; font-size:20px;">地区
                             </th>
                             <td class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="4"
                                 aria-label="Browser: activate to sort column ascending" style="font-size:20px;">
-                                {{$houseMsg->house_name}}
+                                {{$houseMsg->state}}>{{$houseMsg->province}}>{{$houseMsg->city}}
                             </td>
                         </tr>
 
