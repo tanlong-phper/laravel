@@ -258,7 +258,7 @@
                             <td class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="4"
                                 aria-label="Browser: activate to sort column ascending" >
                                 @foreach($imgArr as $value)
-                                <img style="width:250px; height:300px;" src="{{asset('uploads')}}/{{$value->house_imagename}}" alt="">
+                                <img style="width:250px; height:300px;" src="{{asset('local/uploads')}}/{{$value->house_imagename}}" alt="">
                                 @endforeach
                             </td>
 

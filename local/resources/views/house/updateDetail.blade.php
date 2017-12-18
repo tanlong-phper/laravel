@@ -24,7 +24,7 @@
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房源名称：</label>
                         <div class="formControls col-xs-8 col-sm-9">
-                            <input type="text" class="input-text" value="{{$houseMsg->house_name}}" placeholder="3室2厅1厨1卫" id="" name="house_name" >
+                            <input type="text" class="input-text" value="{{$houseMsg->house_name or ''}}" placeholder="3室2厅1厨1卫" id="" name="house_name" >
                         </div>
                     </div>
 
@@ -224,7 +224,7 @@
                                 <tr id="tr_{{$value->imgid}}">
 
                                     <td>
-                                        <img style="width:80px; height:120px;" src="{{asset('uploads')}}/{{$value->house_imagename}}" alt="">
+                                        <img style="width:80px; height:120px;" src="{{asset('local/uploads')}}/{{$value->house_imagename}}" alt="">
                                         <a href="javascript:delimage({{$value->imgid}});" >删除此图片</a>
                                     </td>
 
