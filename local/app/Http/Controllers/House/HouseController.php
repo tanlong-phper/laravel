@@ -36,7 +36,7 @@ class HouseController extends BaseController {
 		$houseData['rim_message'] = isset($houseData['peripheral_information']) ? implode(',',$houseData['peripheral_information']) : '';
 		$houseData['house_facility'] = isset($houseData['house_facility']) ? implode(',',$houseData['house_facility']) : '';
 		$houseData['landlord_id'] = $houseData['landlord_identity'];
-		$houseData['serial_number'] = '';
+		$houseData['serial_number'] = '';//编号
 		$houseData['intermediary_id'] = Session::get('user_id') ? Session::get('user_id') : '';
 		unset( $houseData['_token'],
 				$houseData['peripheral_information'],
@@ -49,7 +49,6 @@ class HouseController extends BaseController {
 				$houseData['landlord_remark'],
 		        $houseData['upload']);
 		$houseMessage = new House_message();
-
 
 
 		$houseId = $houseMessage->insertGetId($houseData);  //保存
@@ -108,8 +107,28 @@ class HouseController extends BaseController {
 				->first();
 		$houseImg = new House_image();
 		$imgArr = $houseImg->where('house_msg_id','=',$id)->get();
-		return view('house.updateDetail',['houseMsg'=>$houseMsg,'imgArr'=>$imgArr,'optionStr'=>$optionStr]);
+		$nationArr = DB::table('nation')->get();
+
+		return view('house.updateDetail',['houseMsg'=>$houseMsg,'imgArr'=>$imgArr,'optionStr'=>$optionStr,'nationArr'=>$nationArr]);
 	}
+
+	/**
+	 *Ajax请求获取地区
+	 */
+	public function region() {
+		if(isset($_GET['p_nation_ID'])){
+			$p_nation_ID = $_GET['p_nation_ID'];
+			$provinceArr = DB::table('province')->where('p_nation_ID',$p_nation_ID)->get();
+			//return json_encode($provinceArr);
+			var_dump($provinceArr);
+		}
+		if(isset($_GET['c_province_ID'])){
+			$c_province_ID = $_GET['c_province_ID'];
+			$cityArr = DB::table('city')->where('c_province_ID',$c_province_ID)->get();
+			return $cityArr;
+		}
+	}
+
 
 	/**
 	 *Ajax请求删除图片
@@ -133,21 +152,22 @@ class HouseController extends BaseController {
 	public function uSave(Request $param) {
 		$msgId = $param->msgId;
 		$landId = $param->landId;
-		$houseData = [
-				'house_name' => htmlspecialchars($param->house_name),           //房源名称
-				'house_location' => htmlspecialchars($param->house_location),   //房源地址
-				'house_structure' => htmlspecialchars($param->house_structure), //房源结构
-				'house_price' => htmlspecialchars($param->house_price),         //房租价格
-				'house_size' => htmlspecialchars($param->house_size),           //房子大小/平方米
-				'house_type' => htmlspecialchars($param->house_type),           //房源类型
-				'house_facility' => implode(',',$param->house_facility),          //房屋设备 数组转字符串
-				'house_keyword' => htmlspecialchars($param->house_keyword),     //房源信息关键字
-				'house_brief' => htmlspecialchars($param->house_brief),         //房源信息简介
-				'house_rise' => htmlspecialchars($param->house_rise),           //房源起租期
-				'house_duration' => htmlspecialchars($param->house_duration),   //房源租期时长
-				'house_status' => $param->house_status,                         //房屋状态
-				'landlord_id' => htmlspecialchars($param->landlord_identity)//房东身份ID
-		];
+		$houseData = Input::all();
+		$houseData['rim_message'] = isset($houseData['peripheral_information']) ? implode(',',$houseData['peripheral_information']) : '';
+		$houseData['house_facility'] = isset($houseData['house_facility']) ? implode(',',$houseData['house_facility']) : '';
+		$houseData['landlord_id'] = $houseData['landlord_identity'];
+		unset( $houseData['_token'],
+				$houseData['peripheral_information'],
+				$houseData['landlord_name'],
+				$houseData['landlord_identity'],
+				$houseData['landlord_email'],
+				$houseData['landlord_phone'],
+				$houseData['landlord_sex'],
+				$houseData['landlord_site'],
+				$houseData['landlord_remark'],
+				$houseData['upload'],
+		        $houseData['landId'],
+				$houseData['msgId']);
 		DB::table('house_message')->where('msgid', $msgId)->update($houseData);
 		$landlordDate = [
 				'landlord_name' => htmlspecialchars($param->landlord_name),      //房东姓名

@@ -37,7 +37,7 @@
                             <tr class="text-c">
                                 <th width="25"><input type="checkbox" name="" value=""></th>
                                 <th width="">ID</th>
-                                <th width="">房源名称</th>
+                                <th width="">房源编号</th>
                                 <th width="">房源结构</th>
                                 <th width="">房源价格</th>
                                 <th width="">房源大小</th>
@@ -53,7 +53,7 @@
                                 <tr class="text-c">
                                     <td><input type="checkbox" value="{{$val->msgid}}" name=""></td>
                                     <td>{{$val->msgid}}</td>
-                                    <td class="text-l"><a href="{{url('house/houseLister/detail',['id'=>$val->msgid])}}"><u style="cursor:pointer" class="text-primary" title="查看">{{$val->house_name}}</u></a></td>
+                                    <td class="text-l"><a href="{{url('house/houseLister/detail',['id'=>$val->msgid])}}"><u style="cursor:pointer" class="text-primary" title="查看">{{$val->serial_number}}</u></a></td>
                                     <td>{{$val->house_structure}}</td>
                                     <td>{{$val->house_price}}</td>
                                     <td><span>{{$val->house_size}}</span> /平方</td>

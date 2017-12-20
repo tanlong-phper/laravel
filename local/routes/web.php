@@ -271,6 +271,8 @@ Route::group(['prefix'=>'house'],function() {
     Route::get('updateList/detail/{id}',$controller.'detail');
     #Ajax请求删除图片
     Route::get('updateList/del',$controller.'del');
+    #Ajax请求获取省份市区
+    Route::get('updateList/region',$controller.'region');
     #房源信息修改表单提交
     Route::post('updateList/uSave',$controller.'uSave');
     #房源详细信息
@@ -284,11 +286,22 @@ Route::group(['prefix'=>'house'],function() {
     #
     Route::any('type/tree',$typeController.'tree');
     #删除
-    Route::any('type/delete/{id}',$typeController.'delete');
+    Route::get('type/delete/{id}',$typeController.'delete');
     #修改
     Route::any('type/update',$typeController.'update');
 });
-
+//国家地区城市添加
+Route::group(['prefix'=>'nation'],function() {
+    $controller = 'Nation\NationController@';
+    #国家城市地区
+    Route::get('add',$controller.'add');
+    #国家添加
+    Route::post('add/state',$controller.'state');
+    #省份添加
+    Route::post('add/province',$controller.'province');
+    #市区添加
+    Route::post('add/city',$controller.'city');
+});
 
 
 

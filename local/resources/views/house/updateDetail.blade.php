@@ -40,9 +40,18 @@
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">国家城市：</label>
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
-                            <select id="country" class="dept_select"  name="state"></select>
-                            <select id="province" class="dept_select"  name="province"></select>
-                            <select id="city" class="dept_select" name="city"></select>
+                            <select id="country" class="dept_select"  name="state">
+                                @foreach($nationArr as $nation)
+                                <option value="{{$nation->chinese_n_name}},{{$nation->n_ID}}">{{$nation->chinese_n_name}}</option>
+                                <option value="{{$nation->english_n_name}},{{$nation->n_ID}}">{{$nation->english_n_name}}</option>
+                                @endforeach
+                            </select>
+                            <select id="province" class="dept_select"  name="province">
+
+                            </select>
+                            <select id="city" class="dept_select" name="city">
+
+                            </select>
                         </div>
                     </div>
 
@@ -71,23 +80,23 @@
                             <div class="check-box">
                                 <input name="peripheral_information[]" value='超市 {{$supermarket}}' @if(isset($rimMessage[0])) checked="checked" @endif type="checkbox" class="date_checkbox" id="peripheral-1">
                                 <label for="peripheral-1">超市</label>
-                                <input type="number" name="" id="supermarket" @if(!isset($rimMessage[0])) disabled="disabled" @endif  placeholder="" value="{{$supermarket}}" min="1" max="300" class="input-text information">/分钟
+                                <input type="number" name="" id="supermarket" @if(!isset($rimMessage[0])) disabled="disabled" @endif  value="{{$supermarket}}" min="1" max="300" class="input-text information">/分钟
                             </div>
                             <div class="check-box">
                                 <input name="peripheral_information[]" value='中餐馆 {{$Chinese}}' @if(isset($rimMessage[1])) checked="checked" @endif type="checkbox" class="date_checkbox" id="peripheral-2">
                                 <label for="peripheral-2">中&nbsp;餐&nbsp;馆</label>&nbsp;
-                                <input type="number" name=""  @if(!isset($rimMessage[1])) disabled="disabled" @endif placeholder="" value="{{$Chinese}}" min="1" max="300" class="input-text information">/分钟
+                                <input type="number" name=""  @if(!isset($rimMessage[1])) disabled="disabled" @endif value="{{$Chinese}}" min="1" max="300" class="input-text information">/分钟
                             </div>
                             <br>
                             <div class="check-box">
                                 <input name="peripheral_information[]" value='警局 {{$police}}' @if(isset($rimMessage[2])) checked="checked" @endif type="checkbox" class="date_checkbox" id="peripheral-3">
                                 <label for="peripheral-3">警局</label>
-                                <input type="number" name=""  @if(!isset($rimMessage[2])) disabled="disabled" @endif disabled="disabled" placeholder="" value="{{$police}}" min="0" max="300" class="input-text information">/分钟
+                                <input type="number" name=""  @if(!isset($rimMessage[2])) disabled="disabled" @endif value="{{$police}}" min="0" max="300" class="input-text information">/分钟
                             </div>
                             <div class="check-box">
                                 <input name="peripheral_information[]" value='公共交通 {{$public}}' @if(isset($rimMessage[3])) checked="checked" @endif type="checkbox" class="date_checkbox" id="peripheral-4">
                                 <label for="peripheral-4">公共交通</label>
-                                <input type="number" name="" @if(!isset($rimMessage[3])) disabled="disabled" @endif disabled="disabled" placeholder="" value="{{$police}}" min="1" max="300" class="input-text information">/分钟
+                                <input type="number" name="" @if(!isset($rimMessage[3])) disabled="disabled" @endif value="{{$public}}" min="1" max="300" class="input-text information">/分钟
                             </div>
                         </div>
                     </div>
@@ -105,6 +114,35 @@
                         </div>
                     </div>
 
+                    <div class="row cl">
+                        <label class="form-label col-xs-4 col-sm-2">押金：</label>
+                        <div class="formControls col-xs-8 col-sm-9"  style="width:45%;">
+                            <input type="number" name="cash_pledge" id="house_size" placeholder="" value="{{$houseMsg->cash_pledge}}"  min="1" class="input-text" style="width:95%;">平方
+                        </div>
+                        <span id=""></span>
+                    </div>
+
+                    <div class="row cl">
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>预付款比例：</label>
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
+                            <span class="select-box">
+				                <select name="payment_proportion" class="select" id="payment_proportion">
+                                    <option value="一押一租">一押一租</option>
+                                </select>
+				            </span>
+                        </div>
+                    </div>
+                    <div class="row cl">
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>结算方式：</label>
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
+                            <span class="select-box">
+				                <select name="knot_way" class="select" id="knot_way">
+                                    <option value="月结">月结</option>
+                                    <option value="季结">季结</option>
+                                </select>
+				            </span>
+                        </div>
+                    </div>
 
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房屋设备：</label>
@@ -159,11 +197,11 @@
                         <div class="formControls col-xs-8 col-sm-9 skin-minimal">
 
                             <div class="check-box">
-                                <input type="text" name="house_rise" id="house_rise" placeholder="" value="" class="input-text" style="display:inline-block">
+                                <input type="text" name="house_rise" id="house_rise" placeholder="" value="{{$houseMsg->house_rise}}" class="input-text" style="display:inline-block">
                             </div>
                             <span>起租期</span>
                             <div class="check-box">
-                                <input type="text" name="house_duration" id="house_duration" class="input-text Wdate">
+                                <input type="text" name="house_duration" id="house_duration" value="{{$houseMsg->house_duration}}" class="input-text Wdate">
                             </div>
                             <span>最长租期</span>
                         </div>
@@ -279,7 +317,7 @@
                         <label class="form-label col-xs-4 col-sm-2">选择图片：</label>
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                         <span class="btn-upload form-group">
-					        <input class="input-text upload-url" type="text" name="uploadfile-2" id="uploadfile-2" readonly  datatype="*" nullmsg="请添加附件！" style="width:200px">
+					        <input class="input-text upload-url" type="text" name="" id="uploadfile-2" readonly  datatype="*" nullmsg="请添加附件！" style="width:200px">
 					        <a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
 					        <input type="file" multiple name="upload[]" class="input-file">
                         </span>
@@ -330,7 +368,32 @@
                 }
             })
         }
-
+        $("select#country").change(function(){
+            var val = $("#country").val();
+            var arr=val.split(",");
+            var p_nation_ID = arr[1];
+            $.ajax({
+                url:"{{url('house/updateList/region')}}",
+                data:'p_nation_ID='+p_nation_ID,
+                type:'get',
+                success:function (re) {
+                    console.log(re);
+                }
+            })
+        });
+        $("select#province").blur(function(){
+            $.ajax({
+                url:"{{url('house/updateList/region')}}",
+                data:'id='+imageid,
+                type:'get',
+                success:function (re) {
+                    console.log(re);
+                    if (re != '0') {
+                        $("#tr_"+imageid).remove();
+                    }
+                }
+            })
+        });
     </script>
     <script>
         $(function (){
@@ -356,69 +419,13 @@
 
     </script>
     <script type="text/javascript" src="{{asset('house/region/chosen.jquery.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('house/region/area_chs.js')}}"></script>
-
-    <script type="text/javascript">
-        var areaObj = [];
-        function initLocation(e){
-            var a = 0;
-            for (var m in e) {
-                areaObj[a] = e[m];
-                var b = 0;
-                for (var n in e[m]) {
-                    areaObj[a][b++] = e[m][n];
-                }
-                a++;
-            }
-        }
-    </script>
-
-    <script type="text/javascript" src="{{asset('house/region/location_chs.js')}}"></script>
-    <script type="text/javascript">
-
-        var country = '';
-        for (var a=0;a<=_areaList.length-1;a++) {
-            var objContry = _areaList[a];
-            country += '<option value="'+objContry+'" a="'+(a+1)+'">'+objContry+'</option>';
-        }
-        $("#country").html(country).chosen().change(function(){
-            var a = $("#country").find("option[value='"+$("#country").val()+"']").attr("a");
-            var _province = areaObj[a];
-            var province = '';
-            for (var b in _province) {
-                var objProvince = _province[b];
-                if (objProvince.n) {
-                    province += '<option value="'+objProvince.n+'" b="'+b+'">'+objProvince.n+'</option>';
-                }
-            }
-            if (!province) {
-                province = '<option value="0" b="0">------</option>';
-            }
-            $("#province").html(province).chosen().change(function(){
-                var b = $("#province").find("option[value='"+$("#province").val()+"']").attr("b");
-                var _city = areaObj[a][b];
-                var city = '';
-                for (var c in _city) {
-                    var objCity = _city[c];
-                    if (objCity.n) {
-                        city += '<option value="'+objCity.n+'">'+objCity.n+'</option>';
-                    }
-                }
-                if (!city) {
-                    var city = '<option value="0">------</option>';
-                }
-                $("#city").html(city).chosen().change();
-                $(".dept_select").trigger("chosen:updated");
-            });
-            $("#province").change();
-            $(".dept_select").trigger("chosen:updated");
-        });
-        $("#country").change();
+    <script>
         document.getElementById('houseTypeVal').value='{{$houseMsg->house_type}}';
         document.getElementById('country').value='{{$houseMsg->state}}';
         document.getElementById('province').value='{{$houseMsg->province}}';
         document.getElementById('city').value='{{$houseMsg->city}}';
+        document.getElementById('payment_proportion').value='{{$houseMsg->payment_proportion}}';
+        document.getElementById('knot_way').value='{{$houseMsg->knot_way}}';
     </script>
-
 @stop
 

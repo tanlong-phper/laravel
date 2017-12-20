@@ -39,26 +39,32 @@
                     </div>
 
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">国家城市：</label>
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>国家城市：</label>
                         <div class="formControls col-xs-8 col-sm-9">
-                            <select id="country" class="dept_select"  name="state"></select>
-                            <select id="province" class="dept_select"  name="province"></select>
-                            <select id="city" class="dept_select" name="city"></select>
+                            <select id="country" class="dept_select"  name="state">
+
+                            </select>
+                            <select id="province" class="dept_select"  name="province">
+
+                            </select>
+                            <select id="city" class="dept_select" name="city">
+
+                            </select>
                         </div>
                     </div>
 
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>详细位置：</label>
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
-                            <input type="text" class="input-text" value="" placeholder="南山区泰邦科技大厦2308" id="house_location" name="house_location" >
+                            <input type="text" class="input-text" value="" placeholder="南山区泰邦科技大厦2308" maxlength="255" id="house_location" name="house_location" >
                         </div>
                         <span id="house_locationMsg"></span>
                     </div>
 
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">房源结构：</label>
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房源结构：</label>
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
-                            <input type="text" name="house_structure" id="house_structure" placeholder="户型 大小" value="" class="input-text">
+                            <input type="text" name="house_structure" id="house_structure" placeholder="户型 大小" maxlength="100" value="" class="input-text">
                         </div>
                         <span id="house_structureMsg"></span>
                     </div>
@@ -91,22 +97,49 @@
 
 
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">房源价格：</label>
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房源价格：</label>
                         <div class="formControls col-xs-8 col-sm-9"  style="width:45%;">
                             <input type="number" name="house_price" id="house_price" placeholder="" value=""  min="1" class="input-text" style="width:95%;">元
                         </div>
                         <span id="house_priceMsg"></span>
                     </div>
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">房源大小：</label>
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房源大小：</label>
                         <div class="formControls col-xs-8 col-sm-9"  style="width:45%;">
                             <input type="number" name="house_size" id="house_size" placeholder="" value="20"  min="1" class="input-text" style="width:95%;">平方
                         </div>
                         <span id="house_sizeMsg"></span>
                     </div>
 
+                    <div class="row cl">
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>押金：</label>
+                        <div class="formControls col-xs-8 col-sm-9"  style="width:45%;">
+                            <input type="number" name="cash_pledge" id="cash_pledge" placeholder="" value=""  min="1" class="input-text" style="width:95%;">平方
+                        </div>
+                        <span id="cash_pledgeMsg"></span>
+                    </div>
 
-
+                    <div class="row cl">
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>预付款比例：</label>
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
+                            <span class="select-box">
+				                <select name="payment_proportion" class="select">
+                                    <option value="一押一租">一押一租</option>
+                                </select>
+				            </span>
+                        </div>
+                    </div>
+                    <div class="row cl">
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>结算方式：</label>
+                        <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
+                            <span class="select-box">
+				                <select name="knot_way" class="select">
+                                    <option value="月结">月结</option>
+                                    <option value="季结">季结</option>
+                                </select>
+				            </span>
+                        </div>
+                    </div>
                     <div class="row cl">
                         <label class="form-label col-xs-4 col-sm-2">房屋设备：</label>
                         <div class="formControls col-xs-8 col-sm-9 skin-minimal">
@@ -141,14 +174,14 @@
                         </div>
                     </div>
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">关键字：</label>
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>关键字：</label>
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="house_keyword" id="house_keyword" placeholder="多个关键字用英文逗号隔开，限10个关键字" value="" maxlength="10" class="input-text">
                         </div>
                         <span id="house_keywordMsg"></span>
                     </div>
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">房源简介：</label>
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房源简介：</label>
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <textarea name="house_brief" id="house_brief" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符"></textarea>
                         </div>
@@ -205,14 +238,14 @@
                         </div>
                     </div>
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">房东姓名：</label>
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房东姓名：</label>
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="landlord_name" id="landlord_name" class="input-text Wdate">
                         </div>
                         <span id="landlord_nameMsg"></span>
                     </div>
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">房东证件号：</label>
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房东证件号：</label>
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="landlord_identity" id="landlord_identity" class="input-text Wdate">
                         </div>
@@ -226,7 +259,7 @@
                         <span id="landlord_emailMsg"></span>
                     </div>
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">房东电话：</label>
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房东电话：</label>
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="landlord_phone" id="landlord_phone" class="input-text Wdate">
                         </div>
@@ -252,7 +285,7 @@
                         </div>
                     </div>
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">房东联系地址：</label>
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>房东联系地址：</label>
                         <div class="formControls col-xs-8 col-sm-9" style="width:45%;">
                             <input type="text" name="landlord_site" id="landlord_site" class="input-text Wdate">
                         </div>
@@ -278,7 +311,7 @@
 
                     <div class="row cl">
                         <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-                            <a href="javascript:verification();"><button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button></a>
+                            <button class="btn btn-primary radius" type="button" id="Submit">保存并提交审核</button>
                             <a href="javascript:window.history.go(-1);"><button class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></a>
                         </div>
                     </div>
@@ -339,17 +372,14 @@
                 $house_size=$("#house_size"),/*大小*/
                 $house_sizeMsg=$('#house_sizeMsg'),
 
+                $cash_pledge=$("#cash_pledge"),
+                $cash_pledgeMsg=$("#cash_pledgeMsg"),
+
                 $house_keyword=$("#house_keyword"),/*关键词*/
                 $house_keywordMsg=$('#house_keywordMsg'),
 
                 $house_brief=$("#house_brief"),/*房简介*/
                 $house_briefMsg=$('#house_briefMsg'),
-
-                $house_rise=$("#house_rise"),/*起租期*/
-                $house_riseMsg=$('#house_riseMsg'),
-
-                $house_duration=$("#house_duration"),/*租期时长*/
-                $house_durationMsg=$('#house_durationMsg'),
 
                 $landlord_name=$("#landlord_name"),/*房东名称*/
                 $landlord_nameMsg=$('#landlord_nameMsg'),
@@ -378,60 +408,64 @@
                 });
             }*/
             /*鼠标失去焦点验证格式*/
-            function onblurr(inputId,spanId,zhengZe,msg){
+            function onblurr(inputId,spanId,zhengZe,emptyMsg,errorMsg){
                 inputId.blur(function(){
                     var val=inputId.val().search(zhengZe);
-
-                        if (val!= -1){
+                    console.log(val);
+                    if (inputId.val()!=""){
+                        if(val != -1){
                             spanId.html("").removeClass().addClass("ok");
                         }else{
-                            spanId.html(msg).removeClass().addClass("err");
-                            $(spanId).css("color","red");
+                            spanId.html(errorMsg).removeClass().addClass("err");
+                            $(spanId).css("color", "red");
                         }
+                    }else{
+                        spanId.html(emptyMsg).removeClass().addClass("err");
+                        $(spanId).css("color", "red");
+                    }
 
                 })
             }
+
             /**/
-            onblurr($house_location,$house_locationMsg,/^[\u4e00-\u9fa5\w]{2,16}$/,"Can't be empty",'');
+            onblurr($house_location,$house_locationMsg,/^[\u4e00-\u9fa5\w ]{2,16}$/,"Can't be empty",'格式错误');
             /*onfocus($house_location,$house_locationMsg,"房源位置");*/
 
-            onblurr($house_structure,$house_structureMsg,/^[\u4e00-\u9fa5\w]{2,16}$/,"Can't be empty");
+            onblurr($house_structure,$house_structureMsg,/^[\u4e00-\u9fa5\w ]{2,16}$/,"Can't be empty",'格式错误');
             /*onfocus($house_structure,$house_structureMsg,"房结构");*/
 
-            onblurr($house_size,$house_sizeMsg,/[0-9]/,"Can't be empty");
+            onblurr($house_size,$house_sizeMsg,/[0-9]/,"Can't be empty",'格式错误');
             /*onfocus($house_size,$house_sizeMsg,"房源大小");*/
 
-            onblurr($house_price,$house_priceMsg,/[0-9]/,"Can't be empty");
+            onblurr($house_price,$house_priceMsg,/[0-9]/,"Can't be empty",'格式错误');
             /*onfocus($house_price,$house_priceMsg,"房源价格");*/
 
-            onblurr($house_keyword,$house_keywordMsg,/[\u4e00-\u9fa5\w]{2,16}$/,"Can't be empty");
+            onblurr($cash_pledge,$cash_pledgeMsg,/[0-9]/,"Can't be empty",'格式错误');//押金
+
+            onblurr($house_keyword,$house_keywordMsg,/[\u4e00-\u9fa5\w ]{2,16}$/,"Can't be empty",'格式错误');
             /*onfocus($house_keyword,$house_keywordMsg,"关键词");*/
 
-            onblurr($house_brief,$house_briefMsg,/[\u4e00-\u9fa5\w\d]{2,16}/,"Can't be empty");
+            onblurr($house_brief,$house_briefMsg,/[\u4e00-\u9fa5\w ]{2,16}/,"Can't be empty",'格式错误');
             /*onfocus($house_brief,$house_briefMsg,"房源简介");*/
 
-            onblurr($house_rise,$house_riseMsg,/^(\d{4})-(\d{2})-(\d{2})$/,"Can't be empty");
-            /*onfocus($house_rise,$house_riseMsg,"起租期");*/
 
-            onblurr($house_duration,$house_durationMsg,/^(\d{4})-(\d{2})-(\d{2})$/,"Can't be empty");
-            /*onfocus($house_duration,$house_durationMsg,"租期时长");*/
-
-            onblurr($landlord_name,$landlord_nameMsg,/[\u4e00-\u9fa5\w\d]\.-\\\/{2,16}/,"Can't be empty");
+            onblurr($landlord_name,$landlord_nameMsg,/[\u4e00-\u9fa5\w ]{2,16}/,"Can't be empty",'格式错误');
             /*onfocus($landlord_name,$landlord_nameMsg,"房东名称");*/
 
-            onblurr($landlord_identity,$landlord_identityMsg,/[0-9]/,"Can't be empty");
+            onblurr($landlord_identity,$landlord_identityMsg,/[0-9]/,"Can't be empty",'格式错误');
             /*onfocus($landlord_identity,$landlord_identityMsg,"房东证件号");*/
 
-            onblurr($landlord_email,$landlord_emailMsg, /(^$)|(^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+)/,"");
-            /*onfocus($landlord_email,$landlord_emailMsg,"请输入正确格式的邮箱");*/
-
-            onblurr($landlord_phone,$landlord_phoneMsg, /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d$/,"Can't be empty");
+            onblurr($landlord_phone,$landlord_phoneMsg, /^1(3|4|5|7|8)\d{9}$/,"Can't be empty",'格式错误');
             /*onfocus($landlord_phone,$landlord_phoneMsg,"请输入手机号码");*/
 
-            onblurr($landlord_site,$landlord_siteMsg,/^[\u4e00-\u9fa5\w]{2,16}$/,"Can't be empty");
+            onblurr($landlord_site,$landlord_siteMsg,/[\u4e00-\u9fa5\w ]{2,16}$/,"Can't be empty",'格式错误');
             /*onfocus($landlord_site,$landlord_siteMsg,"房东联系地址");*/
-            onblurr($landlord_remark,$landlord_remarkMsg,/(^$)|^[\u4e00-\u9fa5]{1,16}$/,"");
-            /*onfocus($landlord_remark,$landlord_remarkMsg,"备注");*/
+
+            $("#Submit").click(function(){
+                if ($(".ok").length==10){
+                   document.getElementById('form-article-add').submit();
+                }else alert("Dear！Please correct the above error");
+            });
         </script>
 
 
